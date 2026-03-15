@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No Conformidades — Isonauta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F6F2; --surface: #FFFFFF; --surface2: #F0EEE8;
+    --border: rgba(0,0,0,0.10); --border2: rgba(0,0,0,0.18);
+    --text: #1A1916; --text2: #6B6A64; --text3: #9C9A92;
+    --radius: 10px; --radius-lg: 16px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    --ocre: #C9922A; --ocre-light: #F5E6C8; --ocre-dark: #8B6218;
+    --nc-color: #A32D2D; --nc-bg: #FCEBEB;
+    --causa-color: #854F0B; --causa-bg: #FAEEDA;
+    --accion-color: #0F6E56; --accion-bg: #E1F5EE;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 0 0 80px; }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+
+  /* Topbar */
+  .topbar { background: #1A1916; padding: 0 24px; }
+  .topbar-inner { max-width: 820px; margin: 0 auto; display: flex; align-items: baseline; justify-content: space-between; padding: 14px 0 12px; border-bottom: 1px solid rgba(201,146,42,0.25); }
+  .brand-name { font-size: 17px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ocre); }
+  .brand-tagline { font-size: 10px; font-weight: 300; font-style: italic; color: rgba(201,146,42,0.5); margin-left: 14px; }
+  .brand-right { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.22); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* Hero */
+  .hero { background: #1A1916; padding: 30px 24px 34px; border-bottom: 1px solid rgba(201,146,42,0.12); }
+  .hero-inner { max-width: 820px; margin: 0 auto; }
+  .hero-label { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(201,146,42,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .hero-label::after { content: ''; display: block; height: 1px; width: 28px; background: var(--ocre); opacity: 0.3; }
+  .hero h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; color: #F7F6F2; margin-bottom: 6px; }
+  .hero h1 span { color: var(--ocre); }
+  .hero p { font-size: 13px; color: rgba(247,246,242,0.4); line-height: 1.6; font-weight: 300; max-width: 520px; }
+
+  /* Steps */
+  .steps-nav { display: flex; gap: 0; margin: 28px 0 24px; border: 0.5px solid var(--border2); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); }
+  .step-btn { flex: 1; padding: 12px 8px; font-size: 12px; font-weight: 500; border: none; background: none; cursor: pointer; color: var(--text3); font-family: 'DM Sans', sans-serif; border-right: 0.5px solid var(--border); transition: all .15s; text-align: center; }
+  .step-btn:last-child { border-right: none; }
+  .step-btn.active { background: #1A1916; color: var(--ocre); }
+  .step-btn .step-num { font-family: 'DM Mono', monospace; font-size: 10px; display: block; margin-bottom: 2px; opacity: 0.6; }
+
+  .step-panel { display: none; }
+  .step-panel.active { display: block; }
+
+  /* Card */
+  .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); margin-bottom: 14px; }
+
+  /* Fields */
+  .field-group { margin-bottom: 16px; }
+  .field-label { font-size: 11px; font-weight: 500; color: var(--text2); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; display: block; }
+  input[type=text], input[type=date], textarea, select {
+    width: 100%; font-size: 13px; padding: 9px 12px;
+    border: 0.5px solid var(--border); border-radius: var(--radius);
+    background: var(--bg); color: var(--text);
+    font-family: 'DM Sans', sans-serif; transition: border-color .15s;
+  }
+  input[type=text]:focus, input[type=date]:focus, textarea:focus, select:focus { outline: none; border-color: var(--ocre); background: var(--surface); }
+  input::placeholder, textarea::placeholder { color: var(--text3); }
+  textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media (max-width:580px) { .field-row { grid-template-columns: 1fr; } .field-row-3 { grid-template-columns: 1fr; } }
+
+  /* Tipo selector */
+  .tipo-grid { display: flex; gap: 8px; margin-top: 6px; }
+  .tipo-btn { flex: 1; padding: 9px 8px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--bg); cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text2); font-family: 'DM Sans', sans-serif; text-align: center; transition: all .15s; }
+  .tipo-btn:hover { border-color: var(--ocre); }
+  .tipo-btn.sel-mayor { background: var(--nc-bg); border-color: var(--nc-color); color: var(--nc-color); }
+  .tipo-btn.sel-menor { background: var(--causa-bg); border-color: var(--causa-color); color: var(--causa-color); }
+  .tipo-btn.sel-obs { background: var(--accion-bg); border-color: var(--accion-color); color: var(--accion-color); }
+
+  /* 5 Porqués */
+  .porques-wrap { margin-top: 4px; }
+  .porque-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+  .porque-num { width: 24px; height: 24px; border-radius: 50%; background: var(--causa-bg); color: var(--causa-color); font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 9px; font-family: 'DM Mono', monospace; }
+  .porque-item textarea { min-height: 56px; }
+  .porque-respuesta { font-size: 11px; color: var(--text3); font-style: italic; padding: 4px 0 0 34px; line-height: 1.5; }
+
+  /* Verificación acción */
+  .verificacion-wrap { margin-top: 14px; border-top: 0.5px solid var(--border); padding-top: 14px; }
+  .verificacion-label { font-size: 11px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 10px; }
+  .verif-options { display: flex; gap: 8px; margin-bottom: 12px; }
+  .verif-btn { flex: 1; padding: 9px 8px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--bg); cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text2); font-family: 'DM Sans', sans-serif; text-align: center; transition: all .15s; }
+  .verif-btn.sel-causa { background: var(--accion-bg); border-color: var(--accion-color); color: var(--accion-color); }
+  .verif-btn.sel-sintoma { background: var(--nc-bg); border-color: var(--nc-color); color: var(--nc-color); }
+  .verif-alerta { font-size: 12px; padding: 10px 14px; border-radius: var(--radius); border: 0.5px solid transparent; display: none; line-height: 1.55; }
+
+  /* Output */
+  .output-section { margin-bottom: 20px; }
+  .output-section-title { font-size: 11px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 0.5px solid var(--border); }
+  .output-field { display: flex; gap: 10px; margin-bottom: 8px; align-items: baseline; }
+  .output-key { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; min-width: 120px; flex-shrink: 0; }
+  .output-val { font-size: 13px; color: var(--text); line-height: 1.55; }
+
+  .porques-output { margin-top: 8px; }
+  .porque-output-item { display: flex; gap: 10px; margin-bottom: 8px; align-items: baseline; }
+  .porque-output-num { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--causa-color); min-width: 50px; }
+
+  /* Botones */
+  .action-bar { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .btn-ghost { font-size: 13px; padding: 8px 18px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--surface); cursor: pointer; color: var(--text2); font-family: 'DM Sans', sans-serif; transition: all .15s; }
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); }
+  .btn-main { font-size: 13px; font-weight: 500; padding: 9px 22px; border: 0.5px solid var(--ocre-dark); border-radius: var(--radius); background: #1A1916; cursor: pointer; color: var(--ocre); font-family: 'DM Sans', sans-serif; transition: opacity .15s; }
+  .btn-main:hover { opacity: 0.85; }
+
+  /* CTA */
+  .cta-card { background: #1A1916; border-radius: var(--radius-lg); padding: 22px; text-align: center; margin-top: 16px; }
+  .cta-card p { font-size: 13px; color: rgba(247,246,242,0.45); margin-bottom: 14px; line-height: 1.6; }
+  .cta-btn { font-size: 13px; font-weight: 500; padding: 9px 22px; border: 0.5px solid var(--ocre-dark); border-radius: var(--radius); background: transparent; cursor: pointer; color: var(--ocre); font-family: 'DM Sans', sans-serif; }
+
+  /* Footer */
+  .footer { border-top: 0.5px solid var(--border); padding: 20px 0 0; display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
+  .footer-brand { font-size: 11px; color: var(--ocre); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .footer-tagline { font-size: 10px; color: var(--text3); font-style: italic; }
+
+  /* Print */
+  @media print {
+    body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .topbar { background: #1A1916 !important; padding: 16px 24px; }
+    .hero { padding: 20px 24px; }
+    .steps-nav, .action-bar, .btn-ghost, .btn-main, .cta-card, #panel-1, #panel-2 { display: none !important; }
+    #panel-3 { display: block !important; }
+    #nc-output { display: block !important; }
+    .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+    .print-hide { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div style="display:flex;align-items:baseline">
+      <span class="brand-name">Isonauta</span>
+      <span class="brand-tagline">No hables lindo, piensa hondo</span>
+    </div>
+    <span class="brand-right">Artefacto</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <p class="hero-label">Mejora continua</p>
+    <h1>No <span>Conformidades</span></h1>
+    <p>Una NC mal gestionada no es un problema técnico — es una señal sistémica. Este artefacto te ayuda a llegar a la causa raíz, no al culpable.</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="steps-nav">
+    <button class="step-btn active" id="step-btn-1" onclick="irAStep(1)">
+      <span class="step-num">Paso 1</span>Describir el hecho
+    </button>
+    <button class="step-btn" id="step-btn-2" onclick="irAStep(2)">
+      <span class="step-num">Paso 2</span>Causa raíz
+    </button>
+    <button class="step-btn" id="step-btn-3" onclick="irAStep(3)">
+      <span class="step-num">Paso 3</span>Acción correctiva
+    </button>
+  </div>
+
+  <!-- PASO 1: Describir -->
+  <div class="step-panel active" id="panel-1">
+
+    <div class="card">
+      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--ocre);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:16px">Identificación</p>
+
+      <div class="field-row-3">
+        <div class="field-group">
+          <label class="field-label">Código NC</label>
+          <input type="text" id="nc-codigo" placeholder="Ej: NC-2026-001">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Fecha detección</label>
+          <input type="date" id="nc-fecha">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Detectado por</label>
+          <input type="text" id="nc-detector" placeholder="Nombre o rol">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Proceso afectado</label>
+          <input type="text" id="nc-proceso" placeholder="Ej: Gestión de compras, Producción...">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Norma o requisito incumplido</label>
+          <input type="text" id="nc-norma" placeholder="Ej: ISO 9001:2015 cláusula 8.4.1">
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Tipo de hallazgo</label>
+        <div class="tipo-grid">
+          <button class="tipo-btn" id="tipo-mayor" onclick="selTipo('mayor')">No conformidad mayor</button>
+          <button class="tipo-btn" id="tipo-menor" onclick="selTipo('menor')">No conformidad menor</button>
+          <button class="tipo-btn" id="tipo-obs" onclick="selTipo('obs')">Observación</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--nc-color);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px">Descripción del hecho</p>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:14px;line-height:1.55">Describe lo que ocurrió con precisión. No busques la causa todavía — eso viene después. Describe el hecho observable: qué pasó, dónde, cuándo, bajo qué condiciones.</p>
+
+      <div class="field-group">
+        <label class="field-label">¿Qué ocurrió exactamente?</label>
+        <textarea id="nc-que" placeholder="Describe el hecho concreto que evidencia el incumplimiento..."></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">¿Dónde ocurrió?</label>
+          <input type="text" id="nc-donde" placeholder="Área, proceso, etapa específica...">
+        </div>
+        <div class="field-group">
+          <label class="field-label">¿Cuál es la evidencia objetiva?</label>
+          <input type="text" id="nc-evidencia" placeholder="Registro, documento, observación directa...">
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">¿Cuál es el impacto real o potencial?</label>
+        <textarea id="nc-impacto" placeholder="¿Qué consecuencias tiene o podría tener este incumplimiento sobre el SGC, el cliente o la organización?" style="min-height:64px"></textarea>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn-ghost" onclick="reiniciar()">Limpiar todo</button>
+      <button class="btn-main" onclick="irAStep(2)">Analizar causa raíz →</button>
+    </div>
+  </div>
+
+  <!-- PASO 2: Causa raíz -->
+  <div class="step-panel" id="panel-2">
+
+    <div class="card">
+      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--causa-color);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Análisis de causa raíz — 5 Por qués</p>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:18px;line-height:1.55">Cada respuesta se convierte en la pregunta del siguiente nivel. El objetivo es llegar a la causa sistémica — aquella que, si se resuelve, impide que la NC vuelva a ocurrir. No siempre se necesitan los 5 niveles: detente cuando llegues a una causa que puedas controlar.</p>
+
+      <div class="porques-wrap" id="porques-wrap">
+        <div class="porque-item">
+          <div class="porque-num">1</div>
+          <textarea class="porque-input" id="pq-1" placeholder="¿Por qué ocurrió el hecho descrito?" oninput="actualizarPorque(1)"></textarea>
+        </div>
+        <div class="porque-item" id="pq-wrap-2" style="display:none">
+          <div class="porque-num">2</div>
+          <textarea class="porque-input" id="pq-2" placeholder="¿Por qué?" oninput="actualizarPorque(2)"></textarea>
+        </div>
+        <div class="porque-item" id="pq-wrap-3" style="display:none">
+          <div class="porque-num">3</div>
+          <textarea class="porque-input" id="pq-3" placeholder="¿Por qué?" oninput="actualizarPorque(3)"></textarea>
+        </div>
+        <div class="porque-item" id="pq-wrap-4" style="display:none">
+          <div class="porque-num">4</div>
+          <textarea class="porque-input" id="pq-4" placeholder="¿Por qué?" oninput="actualizarPorque(4)"></textarea>
+        </div>
+        <div class="porque-item" id="pq-wrap-5" style="display:none">
+          <div class="porque-num">5</div>
+          <textarea class="porque-input" id="pq-5" placeholder="¿Por qué? (causa raíz probable)" oninput="actualizarPorque(5)"></textarea>
+        </div>
+      </div>
+
+      <div class="field-group" style="margin-top:16px;padding-top:16px;border-top:0.5px solid var(--border)">
+        <label class="field-label" style="color:var(--causa-color)">Causa raíz identificada</label>
+        <p style="font-size:12px;color:var(--text3);margin-bottom:8px">Una vez completado el análisis, sintetiza en una sola oración la causa raíz del problema.</p>
+        <textarea id="nc-causa-raiz" placeholder="La causa raíz de esta NC es..."></textarea>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn-ghost" onclick="irAStep(1)">← Volver</button>
+      <button class="btn-main" onclick="irAStep(3)">Definir acción correctiva →</button>
+    </div>
+  </div>
+
+  <!-- PASO 3: Acción correctiva -->
+  <div class="step-panel" id="panel-3">
+
+    <div class="card">
+      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--accion-color);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px">Acción correctiva</p>
+
+      <div class="field-group">
+        <label class="field-label">Acción inmediata (corrección)</label>
+        <p style="font-size:12px;color:var(--text3);margin-bottom:8px">¿Qué se hará de forma inmediata para contener el efecto del problema? Esta acción ataca el síntoma, no la causa.</p>
+        <textarea id="nc-correccion" placeholder="Ej: Separar el lote afectado, notificar al cliente, suspender el proceso..."></textarea>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Acción correctiva (causa raíz)</label>
+        <p style="font-size:12px;color:var(--text3);margin-bottom:8px">¿Qué se hará para eliminar la causa raíz identificada? Esta acción debe impedir que la NC vuelva a ocurrir.</p>
+        <textarea id="nc-accion" placeholder="Ej: Rediseñar el procedimiento de verificación, capacitar al equipo, implementar control automático..."></textarea>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Responsable</label>
+          <input type="text" id="nc-responsable" placeholder="Nombre o cargo">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Fecha límite</label>
+          <input type="date" id="nc-fecha-limite">
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Indicador de eficacia</label>
+        <p style="font-size:12px;color:var(--text3);margin-bottom:8px">¿Cómo sabrás que la acción correctiva fue efectiva? Define un indicador verificable.</p>
+        <input type="text" id="nc-indicador" placeholder="Ej: Cero recurrencias en los próximos 3 meses, tasa de error menor al 1%...">
+      </div>
+
+      <div class="verificacion-wrap">
+        <p class="verificacion-label">Verificación crítica — ¿La acción ataca la causa o el síntoma?</p>
+        <div class="verif-options">
+          <button class="verif-btn" id="verif-causa" onclick="selVerif('causa')">Ataca la causa raíz</button>
+          <button class="verif-btn" id="verif-sintoma" onclick="selVerif('sintoma')">Solo atiende el síntoma</button>
+        </div>
+        <div class="verif-alerta" id="verif-alerta-causa" style="background:var(--accion-bg);border-color:var(--accion-color);color:var(--accion-color)">
+          Bien. Una acción que ataca la causa raíz tiene alta probabilidad de impedir la recurrencia.
+        </div>
+        <div class="verif-alerta" id="verif-alerta-sintoma" style="background:var(--nc-bg);border-color:var(--nc-color);color:var(--nc-color)">
+          Atención. Estás atendiendo el síntoma, no la causa. La NC probablemente vuelva a ocurrir. Considera revisar el análisis de causa raíz y redefinir la acción correctiva.
+        </div>
+      </div>
+    </div>
+
+    <div id="nc-output" style="display:none">
+      <div class="card">
+        <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--ocre);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Ficha de No Conformidad</p>
+        <p style="font-size:12px;color:var(--text3);margin-bottom:20px">Registro completo listo para el sistema de gestión</p>
+
+        <div class="output-section">
+          <p class="output-section-title" style="color:var(--nc-color)">Identificación</p>
+          <div id="out-identificacion"></div>
+        </div>
+
+        <div class="output-section">
+          <p class="output-section-title" style="color:var(--nc-color)">Descripción del hecho</p>
+          <div id="out-hecho"></div>
+        </div>
+
+        <div class="output-section">
+          <p class="output-section-title" style="color:var(--causa-color)">Análisis de causa raíz</p>
+          <div id="out-causa"></div>
+        </div>
+
+        <div class="output-section">
+          <p class="output-section-title" style="color:var(--accion-color)">Acción correctiva</p>
+          <div id="out-accion"></div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap" class="print-hide">
+        <button class="btn-ghost" onclick="window.print()" style="display:flex;align-items:center;gap:6px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Guardar como PDF
+        </button>
+      </div>
+
+      <div class="cta-card">
+        <p>Esta es una muestra del Artefacto de No Conformidades Isonauta.<br>El ecosistema completo integra contexto, partes interesadas, cultura y mejora continua.</p>
+        <button class="cta-btn" onclick="window.open('https://artefactos.vercel.app','_blank')">Ver todos los artefactos →</button>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn-ghost" onclick="irAStep(2)">← Volver</button>
+      <button class="btn-main" onclick="generarFicha()">Generar ficha →</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-brand">Isonauta</span>
+    <span class="footer-tagline">No hables lindo, piensa hondo</span>
+  </div>
+
+</div>
+
+<script>
+let tipoNC = null;
+let verifNC = null;
+
+function selTipo(tipo) {
+  tipoNC = tipo;
+  ['mayor','menor','obs'].forEach(t => {
+    document.getElementById(`tipo-${t}`).className = 'tipo-btn';
+  });
+  const clases = { mayor: 'sel-mayor', menor: 'sel-menor', obs: 'sel-obs' };
+  document.getElementById(`tipo-${tipo}`).classList.add(clases[tipo]);
+}
+
+function actualizarPorque(n) {
+  const val = document.getElementById(`pq-${n}`).value.trim();
+  if (val && n < 5) {
+    document.getElementById(`pq-wrap-${n+1}`).style.display = 'flex';
+  }
+}
+
+function selVerif(tipo) {
+  verifNC = tipo;
+  ['causa','sintoma'].forEach(t => document.getElementById(`verif-${t}`).className = 'verif-btn');
+  document.getElementById(`verif-${tipo}`).classList.add(`sel-${tipo}`);
+  document.getElementById('verif-alerta-causa').style.display = tipo === 'causa' ? 'block' : 'none';
+  document.getElementById('verif-alerta-sintoma').style.display = tipo === 'sintoma' ? 'block' : 'none';
+}
+
+function campo(key, val) {
+  if (!val || !val.trim()) return '';
+  return `<div class="output-field"><span class="output-key">${key}</span><span class="output-val">${val}</span></div>`;
+}
+
+const TIPOS_LABEL = { mayor: 'No conformidad mayor', menor: 'No conformidad menor', obs: 'Observación', null: '—' };
+
+function generarFicha() {
+  const porques = [1,2,3,4,5].map(n => {
+    const el = document.getElementById(`pq-${n}`);
+    return el ? el.value.trim() : '';
+  }).filter(v => v);
+
+  document.getElementById('out-identificacion').innerHTML = [
+    campo('Código', document.getElementById('nc-codigo').value),
+    campo('Fecha', document.getElementById('nc-fecha').value),
+    campo('Detectado por', document.getElementById('nc-detector').value),
+    campo('Proceso', document.getElementById('nc-proceso').value),
+    campo('Requisito', document.getElementById('nc-norma').value),
+    campo('Tipo', TIPOS_LABEL[tipoNC]),
+  ].join('');
+
+  document.getElementById('out-hecho').innerHTML = [
+    campo('¿Qué ocurrió?', document.getElementById('nc-que').value),
+    campo('¿Dónde?', document.getElementById('nc-donde').value),
+    campo('Evidencia', document.getElementById('nc-evidencia').value),
+    campo('Impacto', document.getElementById('nc-impacto').value),
+  ].join('');
+
+  const pqHTML = porques.length > 0 ? `
+    <div class="output-field">
+      <span class="output-key">5 Por qués</span>
+      <div class="output-val">
+        ${porques.map((p,i) => `<div style="margin-bottom:4px"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--causa-color);margin-right:8px">Por qué ${i+1}</span>${p}</div>`).join('')}
+      </div>
+    </div>` : '';
+
+  document.getElementById('out-causa').innerHTML = pqHTML + campo('Causa raíz', document.getElementById('nc-causa-raiz').value);
+
+  const verifLabel = verifNC === 'causa' ? '✓ Ataca la causa raíz' : verifNC === 'sintoma' ? '⚠ Solo atiende el síntoma' : '—';
+  const verifColor = verifNC === 'causa' ? 'var(--accion-color)' : verifNC === 'sintoma' ? 'var(--nc-color)' : 'var(--text3)';
+
+  document.getElementById('out-accion').innerHTML = [
+    campo('Corrección inmediata', document.getElementById('nc-correccion').value),
+    campo('Acción correctiva', document.getElementById('nc-accion').value),
+    campo('Responsable', document.getElementById('nc-responsable').value),
+    campo('Fecha límite', document.getElementById('nc-fecha-limite').value),
+    campo('Indicador eficacia', document.getElementById('nc-indicador').value),
+    verifNC ? `<div class="output-field"><span class="output-key">Verificación</span><span class="output-val" style="color:${verifColor};font-weight:500">${verifLabel}</span></div>` : '',
+  ].join('');
+
+  document.getElementById('nc-output').style.display = 'block';
+  document.getElementById('nc-output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function irAStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById(`panel-${i}`).classList.toggle('active', i === n);
+    document.getElementById(`step-btn-${i}`).classList.toggle('active', i === n);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function reiniciar() {
+  tipoNC = null; verifNC = null;
+  ['mayor','menor','obs'].forEach(t => document.getElementById(`tipo-${t}`).className = 'tipo-btn');
+  ['verif-causa','verif-sintoma'].forEach(id => document.getElementById(id).className = 'verif-btn');
+  ['verif-alerta-causa','verif-alerta-sintoma'].forEach(id => document.getElementById(id).style.display = 'none');
+  ['nc-codigo','nc-detector','nc-proceso','nc-norma','nc-donde','nc-evidencia','nc-responsable','nc-indicador'].forEach(id => document.getElementById(id).value = '');
+  ['nc-fecha','nc-fecha-limite'].forEach(id => document.getElementById(id).value = '');
+  ['nc-que','nc-impacto','nc-causa-raiz','nc-correccion','nc-accion'].forEach(id => document.getElementById(id).value = '');
+  [1,2,3,4,5].forEach(n => { const el = document.getElementById(`pq-${n}`); if(el) el.value = ''; });
+  [2,3,4,5].forEach(n => { const el = document.getElementById(`pq-wrap-${n}`); if(el) el.style.display = 'none'; });
+  document.getElementById('nc-output').style.display = 'none';
+}
+</script>
+</body>
+</html>
