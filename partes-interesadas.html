@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partes Interesadas — Isonauta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F6F2; --surface: #FFFFFF; --surface2: #F0EEE8;
+    --border: rgba(0,0,0,0.10); --border2: rgba(0,0,0,0.18);
+    --text: #1A1916; --text2: #6B6A64; --text3: #9C9A92;
+    --radius: 10px; --radius-lg: 16px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    --ocre: #C9922A; --ocre-light: #F5E6C8; --ocre-dark: #8B6218;
+    --q1: #0F6E56; --q1-bg: #E1F5EE; /* Alto poder, Alto impacto */
+    --q2: #854F0B; --q2-bg: #FAEEDA; /* Alto poder, Bajo impacto */
+    --q3: #185FA5; --q3-bg: #E6F1FB; /* Bajo poder, Alto impacto */
+    --q4: #5F5E5A; --q4-bg: #F0EEE8; /* Bajo poder, Bajo impacto */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 0 0 80px; }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  /* Topbar */
+  .topbar { background: #1A1916; padding: 0 24px; }
+  .topbar-inner { max-width: 860px; margin: 0 auto; display: flex; align-items: baseline; justify-content: space-between; padding: 14px 0 12px; border-bottom: 1px solid rgba(201,146,42,0.25); }
+  .brand-name { font-size: 17px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ocre); }
+  .brand-tagline { font-size: 10px; font-weight: 300; font-style: italic; color: rgba(201,146,42,0.5); margin-left: 14px; }
+  .brand-right { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.22); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* Hero */
+  .hero { background: #1A1916; padding: 30px 24px 34px; border-bottom: 1px solid rgba(201,146,42,0.12); }
+  .hero-inner { max-width: 860px; margin: 0 auto; }
+  .hero-label { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(201,146,42,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .hero-label::after { content: ''; display: block; height: 1px; width: 28px; background: var(--ocre); opacity: 0.3; }
+  .hero h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; color: #F7F6F2; margin-bottom: 6px; }
+  .hero h1 span { color: var(--ocre); }
+  .hero p { font-size: 13px; color: rgba(247,246,242,0.4); line-height: 1.6; font-weight: 300; max-width: 520px; }
+
+  /* Steps nav */
+  .steps-nav { display: flex; gap: 0; margin: 28px 0 24px; border: 0.5px solid var(--border2); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); }
+  .step-btn { flex: 1; padding: 12px 8px; font-size: 12px; font-weight: 500; border: none; background: none; cursor: pointer; color: var(--text3); font-family: 'DM Sans', sans-serif; border-right: 0.5px solid var(--border); transition: all .15s; text-align: center; }
+  .step-btn:last-child { border-right: none; }
+  .step-btn.active { background: #1A1916; color: var(--ocre); }
+  .step-btn .step-num { font-family: 'DM Mono', monospace; font-size: 10px; display: block; margin-bottom: 2px; opacity: 0.6; }
+
+  /* Panels */
+  .step-panel { display: none; }
+  .step-panel.active { display: block; }
+
+  /* Cards */
+  .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); margin-bottom: 14px; }
+
+  /* Form fields */
+  .field-group { margin-bottom: 16px; }
+  .field-label { font-size: 11px; font-weight: 500; color: var(--text2); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; display: block; }
+  input[type=text], textarea, select {
+    width: 100%; font-size: 13px; padding: 9px 12px;
+    border: 0.5px solid var(--border); border-radius: var(--radius);
+    background: var(--bg); color: var(--text);
+    font-family: 'DM Sans', sans-serif; transition: border-color .15s;
+  }
+  input[type=text]:focus, textarea:focus, select:focus { outline: none; border-color: var(--ocre); background: var(--surface); }
+  input[type=text]::placeholder, textarea::placeholder { color: var(--text3); }
+  textarea { resize: vertical; min-height: 72px; line-height: 1.55; }
+
+  /* Evaluación poder/impacto */
+  .eval-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  .eval-block { }
+  .eval-options { display: flex; gap: 6px; margin-top: 6px; }
+  .eval-btn {
+    flex: 1; padding: 9px 6px; border: 0.5px solid var(--border2);
+    border-radius: var(--radius); background: var(--bg); cursor: pointer;
+    font-size: 12px; font-weight: 500; color: var(--text2);
+    font-family: 'DM Sans', sans-serif; text-align: center; transition: all .15s;
+  }
+  .eval-btn:hover { border-color: var(--ocre); background: var(--ocre-light); }
+  .eval-btn.selected-alto { border-color: var(--q1); background: var(--q1-bg); color: var(--q1); }
+  .eval-btn.selected-bajo { border-color: var(--q4); background: var(--q4-bg); color: var(--q4); }
+
+  /* Cuadrante preview */
+  .cuadrante-preview {
+    border-radius: var(--radius); padding: 10px 14px;
+    font-size: 12px; font-weight: 500; display: none;
+    margin-bottom: 16px; border: 0.5px solid transparent;
+  }
+  .cuadrante-preview .q-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .cuadrante-preview .q-accion { font-size: 12px; }
+
+  /* Riesgos/Oportunidades */
+  .ro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) { .ro-grid { grid-template-columns: 1fr; } .eval-grid { grid-template-columns: 1fr; } }
+
+  /* Lista de PIs */
+  .pi-item {
+    display: flex; align-items: center; gap:12px;
+    padding: 12px 14px; background: var(--bg);
+    border: 0.5px solid var(--border); border-radius: var(--radius);
+    margin-bottom: 8px; cursor: pointer; transition: border-color .15s;
+  }
+  .pi-item:hover { border-color: var(--ocre); }
+  .pi-item .pi-q { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .pi-item .pi-name { font-size: 13px; font-weight: 500; flex: 1; }
+  .pi-item .pi-meta { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+  .pi-item .pi-del { color: var(--text3); font-size: 16px; cursor: pointer; padding: 2px 6px; border-radius: 4px; transition: all .15s; }
+  .pi-item .pi-del:hover { color: #A32D2D; background: #FCEBEB; }
+  .pi-empty { font-size: 13px; color: var(--text3); font-style: italic; padding: 12px 0; text-align: center; }
+
+  /* Mapa visual */
+  .mapa-wrap { position: relative; }
+  .mapa-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr; gap: 8px;
+    margin-bottom: 8px;
+  }
+  .mapa-cuadrante { border-radius: var(--radius); padding: 14px; min-height: 130px; border: 0.5px solid transparent; }
+  .mapa-cuadrante .q-titulo { font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .mapa-cuadrante .q-accion { font-size: 10px; margin-bottom: 10px; opacity: 0.7; }
+  .mapa-cuadrante .q-pis { display: flex; flex-wrap: wrap; gap: 5px; }
+  .pi-tag { font-size: 11px; padding: 3px 8px; border-radius: 10px; font-weight: 500; }
+
+  .mapa-ejes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mapa-eje { text-align: center; font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 0; }
+
+  /* Tabla outputs */
+  .outputs-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .outputs-table th { background: var(--surface2); padding: 8px 12px; text-align: left; font-size: 10px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text3); border-bottom: 0.5px solid var(--border); }
+  .outputs-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--border); vertical-align: top; line-height: 1.5; color: var(--text2); }
+  .outputs-table tr:last-child td { border-bottom: none; }
+  .riesgo-pill { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: #FCEBEB; color: #A32D2D; font-weight: 500; white-space: nowrap; }
+  .oport-pill { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: #E1F5EE; color: #0F6E56; font-weight: 500; white-space: nowrap; }
+
+  /* Botones */
+  .action-bar { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .btn-ghost { font-size: 13px; padding: 8px 18px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--surface); cursor: pointer; color: var(--text2); font-family: 'DM Sans', sans-serif; transition: all .15s; }
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); }
+  .btn-main { font-size: 13px; font-weight: 500; padding: 9px 22px; border: 0.5px solid var(--ocre-dark); border-radius: var(--radius); background: #1A1916; cursor: pointer; color: var(--ocre); font-family: 'DM Sans', sans-serif; transition: opacity .15s; }
+  .btn-main:hover { opacity: 0.85; }
+  .btn-add { font-size: 12px; padding: 8px 16px; border: 0.5px dashed var(--border2); border-radius: var(--radius); background: none; cursor: pointer; color: var(--text2); font-family: 'DM Sans', sans-serif; transition: all .15s; }
+  .btn-add:hover { border-color: var(--ocre); color: var(--text); background: var(--ocre-light); }
+
+  /* CTA */
+  .cta-card { background: #1A1916; border-radius: var(--radius-lg); padding: 22px; text-align: center; margin-top: 20px; }
+  .cta-card p { font-size: 13px; color: rgba(247,246,242,0.45); margin-bottom: 14px; line-height: 1.6; }
+  .cta-btn { font-size: 13px; font-weight: 500; padding: 9px 22px; border: 0.5px solid var(--ocre-dark); border-radius: var(--radius); background: transparent; cursor: pointer; color: var(--ocre); font-family: 'DM Sans', sans-serif; }
+
+  /* Footer */
+  .footer { border-top: 0.5px solid var(--border); padding: 20px 0 0; display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
+  .footer-brand { font-size: 11px; color: var(--ocre); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .footer-tagline { font-size: 10px; color: var(--text3); font-style: italic; }
+
+  /* Print */
+  @media print {
+    body { background: white; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .topbar { background: #1A1916 !important; padding: 16px 24px; }
+    .hero { padding: 20px 24px; }
+    .steps-nav, .action-bar, .btn-ghost, .btn-main, .btn-add, .cta-card, #panel-1, #panel-2, #step-btn-1, #step-btn-2, #step-btn-3 { display: none !important; }
+    #panel-3 { display: block !important; }
+    #ro-output { display: block !important; }
+    .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+    .outputs-table th, .outputs-table td { padding: 8px 10px; }
+    .print-btn { display: none !important; }
+    .footer { border-top: 1px solid #ddd; margin-top: 20px; }
+    .container { padding: 0 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div style="display:flex;align-items:baseline">
+      <span class="brand-name">Isonauta</span>
+      <span class="brand-tagline">No hables lindo, piensa hondo</span>
+    </div>
+    <span class="brand-right">Artefacto</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <p class="hero-label">Gestión del contexto</p>
+    <h1>Partes <span>Interesadas</span></h1>
+    <p>Identifica, evalúa y deriva riesgos y oportunidades desde cada parte interesada. Output directo para cláusulas 4.2 y 6.1.</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="steps-nav">
+    <button class="step-btn active" id="step-btn-1" onclick="irAStep(1)">
+      <span class="step-num">Paso 1</span>Identificar y evaluar
+    </button>
+    <button class="step-btn" id="step-btn-2" onclick="irAStep(2)">
+      <span class="step-num">Paso 2</span>Mapa de poder
+    </button>
+    <button class="step-btn" id="step-btn-3" onclick="irAStep(3)">
+      <span class="step-num">Paso 3</span>Riesgos y oportunidades
+    </button>
+  </div>
+
+  <!-- PASO 1: Identificar -->
+  <div class="step-panel active" id="panel-1">
+
+    <div class="card">
+      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--ocre);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px">Nueva parte interesada</p>
+
+      <div class="field-group">
+        <label class="field-label">Parte interesada</label>
+        <input type="text" id="pi-nombre" placeholder="Ej: Clientes, Proveedores, Organismos reguladores...">
+      </div>
+
+      <div class="ro-grid">
+        <div class="field-group">
+          <label class="field-label">Necesidad</label>
+          <textarea id="pi-necesidad" placeholder="¿Qué necesita esta parte interesada del SGC? (requisito concreto)"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Expectativa</label>
+          <textarea id="pi-expectativa" placeholder="¿Qué espera que el SGC le garantice o provea?"></textarea>
+        </div>
+      </div>
+
+      <div class="eval-grid">
+        <div class="eval-block">
+          <label class="field-label">Poder</label>
+          <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Capacidad de influir en políticas y decisiones del SGC</p>
+          <div class="eval-options">
+            <button class="eval-btn" id="btn-poder-alto" onclick="selEval('poder','Alto')">Alto</button>
+            <button class="eval-btn" id="btn-poder-bajo" onclick="selEval('poder','Bajo')">Bajo</button>
+          </div>
+        </div>
+        <div class="eval-block">
+          <label class="field-label">Impacto</label>
+          <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Puede afectar o ser afectado por los objetivos del SGC</p>
+          <div class="eval-options">
+            <button class="eval-btn" id="btn-impacto-alto" onclick="selEval('impacto','Alto')">Alto</button>
+            <button class="eval-btn" id="btn-impacto-bajo" onclick="selEval('impacto','Bajo')">Bajo</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cuadrante-preview" id="cuadrante-preview">
+        <p class="q-label" id="prev-label"></p>
+        <p class="q-accion" id="prev-accion"></p>
+      </div>
+
+      <button class="btn-add" onclick="agregarPI()">+ Agregar parte interesada</button>
+    </div>
+
+    <div class="card">
+      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Partes interesadas registradas</p>
+      <div id="pi-lista"><p class="pi-empty">Aún no has agregado ninguna parte interesada</p></div>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn-ghost" onclick="reiniciar()">Limpiar todo</button>
+      <button class="btn-main" onclick="irAStep(2)">Ver mapa de poder →</button>
+    </div>
+  </div>
+
+  <!-- PASO 2: Mapa -->
+  <div class="step-panel" id="panel-2">
+    <div class="card">
+      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--ocre);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:16px">Mapa poder × impacto</p>
+      <div class="mapa-wrap">
+        <div style="display:flex;gap:8px;align-items:stretch">
+          <div style="display:flex;flex-direction:column;justify-content:space-around;padding-right:6px">
+            <span style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:0.05em">Alto poder</span>
+            <span style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:0.05em">Bajo poder</span>
+          </div>
+          <div style="flex:1">
+            <div class="mapa-grid" id="mapa-grid">
+              <div class="mapa-cuadrante" style="background:var(--q1-bg);border-color:rgba(15,110,86,0.2)">
+                <p class="q-titulo" style="color:var(--q1)">Alto poder · Alto impacto</p>
+                <p class="q-accion" style="color:var(--q1)">Colaborar y solicitar directrices</p>
+                <div class="q-pis" id="q-AA"></div>
+              </div>
+              <div class="mapa-cuadrante" style="background:var(--q2-bg);border-color:rgba(133,79,11,0.2)">
+                <p class="q-titulo" style="color:var(--q2)">Alto poder · Bajo impacto</p>
+                <p class="q-accion" style="color:var(--q2)">Mitigar y defenderse</p>
+                <div class="q-pis" id="q-AB"></div>
+              </div>
+              <div class="mapa-cuadrante" style="background:var(--q3-bg);border-color:rgba(24,95,165,0.2)">
+                <p class="q-titulo" style="color:var(--q3)">Bajo poder · Alto impacto</p>
+                <p class="q-accion" style="color:var(--q3)">Involucrar y garantizar intereses</p>
+                <div class="q-pis" id="q-BA"></div>
+              </div>
+              <div class="mapa-cuadrante" style="background:var(--q4-bg);border-color:rgba(95,94,90,0.2)">
+                <p class="q-titulo" style="color:var(--q4)">Bajo poder · Bajo impacto</p>
+                <p class="q-accion" style="color:var(--q4)">Monitorear</p>
+                <div class="q-pis" id="q-BB"></div>
+              </div>
+            </div>
+            <div class="mapa-ejes">
+              <span class="mapa-eje">← Alto impacto</span>
+              <span class="mapa-eje">Bajo impacto →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="action-bar">
+      <button class="btn-ghost" onclick="irAStep(1)">← Volver</button>
+      <button class="btn-main" onclick="irAStep(3)">Derivar riesgos y oportunidades →</button>
+    </div>
+  </div>
+
+  <!-- PASO 3: Riesgos y Oportunidades -->
+  <div class="step-panel" id="panel-3">
+    <div id="ro-cards"></div>
+
+    <div class="card" id="ro-output" style="display:none">
+      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--ocre);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Output — Cláusulas 4.2 y 6.1</p>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:16px">Riesgos y oportunidades derivados de partes interesadas relevantes</p>
+      <table class="outputs-table" id="ro-tabla">
+        <thead>
+          <tr>
+            <th>Parte interesada</th>
+            <th>Necesidad</th>
+            <th>Expectativa</th>
+            <th>Cuadrante</th>
+            <th>Tipo</th>
+            <th>Descripción</th>
+            <th>Cláusula</th>
+          </tr>
+        </thead>
+        <tbody id="ro-tbody"></tbody>
+      </table>
+      <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;align-items:center">
+        <button class="btn-ghost print-btn" onclick="window.print()" style="display:flex;align-items:center;gap:6px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Guardar como PDF
+        </button>
+      </div>
+      <div class="cta-card" style="margin-top:16px">
+        <p>Esta es una muestra del Artefacto de Partes Interesadas Isonauta.<br>El diagnóstico completo integra todas las dimensiones del contexto organizacional.</p>
+        <button class="cta-btn" onclick="window.open('https://artefactos.vercel.app','_blank')">Ver todos los artefactos →</button>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn-ghost" onclick="irAStep(2)">← Volver</button>
+      <button class="btn-main" onclick="generarOutput()">Generar output →</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-brand">Isonauta</span>
+    <span class="footer-tagline">No hables lindo, piensa hondo</span>
+  </div>
+
+</div>
+
+<script>
+const CUADRANTES = {
+  'AA': { label: 'Alto poder · Alto impacto', accion: 'Colaborar y solicitar directrices', color: '#0F6E56', bg: '#E1F5EE', key: 'q-AA' },
+  'AB': { label: 'Alto poder · Bajo impacto', accion: 'Mitigar y defenderse', color: '#854F0B', bg: '#FAEEDA', key: 'q-AB' },
+  'BA': { label: 'Bajo poder · Alto impacto', accion: 'Involucrar y garantizar intereses', color: '#185FA5', bg: '#E6F1FB', key: 'q-BA' },
+  'BB': { label: 'Bajo poder · Bajo impacto', accion: 'Monitorear', color: '#5F5E5A', bg: '#F0EEE8', key: 'q-BB' },
+};
+
+let pis = [];
+let evalActual = { poder: null, impacto: null };
+let roData = {};
+
+function getQ(poder, impacto) {
+  return (poder === 'Alto' ? 'A' : 'B') + (impacto === 'Alto' ? 'A' : 'B');
+}
+
+function selEval(eje, val) {
+  evalActual[eje] = val;
+  ['alto','bajo'].forEach(v => {
+    const btn = document.getElementById(`btn-${eje}-${v}`);
+    btn.className = 'eval-btn';
+    if (v === val.toLowerCase()) {
+      btn.classList.add(val === 'Alto' ? 'selected-alto' : 'selected-bajo');
+    }
+  });
+  actualizarPreview();
+}
+
+function actualizarPreview() {
+  if (!evalActual.poder || !evalActual.impacto) return;
+  const q = getQ(evalActual.poder, evalActual.impacto);
+  const info = CUADRANTES[q];
+  const el = document.getElementById('cuadrante-preview');
+  el.style.display = 'block';
+  el.style.background = info.bg;
+  el.style.borderColor = info.color + '44';
+  document.getElementById('prev-label').style.color = info.color;
+  document.getElementById('prev-label').textContent = info.label;
+  document.getElementById('prev-accion').style.color = info.color;
+  document.getElementById('prev-accion').textContent = 'Acción: ' + info.accion;
+}
+
+function agregarPI() {
+  const nombre = document.getElementById('pi-nombre').value.trim();
+  const necesidad = document.getElementById('pi-necesidad').value.trim();
+  const expectativa = document.getElementById('pi-expectativa').value.trim();
+  if (!nombre) { alert('Ingresa el nombre de la parte interesada.'); return; }
+  if (!evalActual.poder || !evalActual.impacto) { alert('Selecciona Poder e Impacto.'); return; }
+  const q = getQ(evalActual.poder, evalActual.impacto);
+  pis.push({ id: Date.now(), nombre, necesidad, expectativa, poder: evalActual.poder, impacto: evalActual.impacto, q, riesgo: '', oportunidad: '' });
+  limpiarForm();
+  renderLista();
+}
+
+function limpiarForm() {
+  document.getElementById('pi-nombre').value = '';
+  document.getElementById('pi-necesidad').value = '';
+  document.getElementById('pi-expectativa').value = '';
+  evalActual = { poder: null, impacto: null };
+  ['poder','impacto'].forEach(eje => ['alto','bajo'].forEach(v => {
+    document.getElementById(`btn-${eje}-${v}`).className = 'eval-btn';
+  }));
+  document.getElementById('cuadrante-preview').style.display = 'none';
+}
+
+function eliminarPI(id) {
+  pis = pis.filter(p => p.id !== id);
+  renderLista();
+}
+
+function renderLista() {
+  const el = document.getElementById('pi-lista');
+  if (pis.length === 0) { el.innerHTML = '<p class="pi-empty">Aún no has agregado ninguna parte interesada</p>'; return; }
+  el.innerHTML = pis.map(p => {
+    const q = CUADRANTES[p.q];
+    return `
+      <div class="pi-item">
+        <div class="pi-q" style="background:${q.color}"></div>
+        <div style="flex:1">
+          <p class="pi-name">${p.nombre}</p>
+          ${p.necesidad ? `<p style="font-size:11px;color:var(--text3);margin-top:2px">${p.necesidad.substring(0,80)}${p.necesidad.length>80?'...':''}</p>` : ''}
+        </div>
+        <span class="pi-meta">${p.poder} poder · ${p.impacto} impacto</span>
+        <span class="pi-del" onclick="eliminarPI(${p.id})">×</span>
+      </div>`;
+  }).join('');
+}
+
+function renderMapa() {
+  Object.keys(CUADRANTES).forEach(q => {
+    const el = document.getElementById(`q-${q}`);
+    const info = CUADRANTES[q];
+    const items = pis.filter(p => p.q === q);
+    el.innerHTML = items.length === 0
+      ? `<span style="font-size:11px;color:${info.color};opacity:0.4;font-style:italic">Sin partes interesadas</span>`
+      : items.map(p => `<span class="pi-tag" style="background:${info.color}22;color:${info.color}">${p.nombre}</span>`).join('');
+  });
+}
+
+function renderROCards() {
+  const relevantes = pis.filter(p => p.q === 'AA' || p.q === 'AB' || p.q === 'BA');
+  const el = document.getElementById('ro-cards');
+  if (relevantes.length === 0) {
+    el.innerHTML = '<div class="card"><p style="color:var(--text3);font-size:13px;text-align:center;padding:12px 0">No hay partes interesadas con poder o impacto relevante para derivar riesgos y oportunidades.<br>Vuelve al paso 1 y agrega más partes interesadas.</p></div>';
+    return;
+  }
+  el.innerHTML = relevantes.map(p => {
+    const q = CUADRANTES[p.q];
+    const saved = roData[p.id] || { riesgo: '', oportunidad: '' };
+    return `
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+          <div style="width:8px;height:8px;border-radius:50%;background:${q.color};flex-shrink:0"></div>
+          <p style="font-size:14px;font-weight:600">${p.nombre}</p>
+          <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:${q.bg};color:${q.color};font-family:'DM Mono',monospace">${q.label}</span>
+        </div>
+        ${p.necesidad || p.expectativa ? `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+          ${p.necesidad ? `<div><p style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">Necesidad</p><p style="font-size:12px;color:var(--text2);line-height:1.5">${p.necesidad}</p></div>` : ''}
+          ${p.expectativa ? `<div><p style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px">Expectativa</p><p style="font-size:12px;color:var(--text2);line-height:1.5">${p.expectativa}</p></div>` : ''}
+        </div>` : ''}
+        <div class="ro-grid">
+          <div class="field-group">
+            <label class="field-label" style="color:#A32D2D">Riesgo si no se gestiona</label>
+            <textarea placeholder="¿Qué puede salir mal si no se considera esta parte interesada?" onchange="guardarRO(${p.id},'riesgo',this.value)" oninput="guardarRO(${p.id},'riesgo',this.value)">${saved.riesgo}</textarea>
+          </div>
+          <div class="field-group">
+            <label class="field-label" style="color:#0F6E56">Oportunidad si se gestiona bien</label>
+            <textarea placeholder="¿Qué puede ganar el SGC si se gestiona bien esta relación?" onchange="guardarRO(${p.id},'oportunidad',this.value)" oninput="guardarRO(${p.id},'oportunidad',this.value)">${saved.oportunidad}</textarea>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function guardarRO(id, campo, val) {
+  if (!roData[id]) roData[id] = { riesgo: '', oportunidad: '' };
+  roData[id][campo] = val;
+}
+
+function generarOutput() {
+  const relevantes = pis.filter(p => p.q !== 'BB');
+  const tbody = document.getElementById('ro-tbody');
+  const rows = [];
+  relevantes.forEach(p => {
+    const q = CUADRANTES[p.q];
+    const ro = roData[p.id] || {};
+    if (ro.riesgo) rows.push(`
+      <tr>
+        <td style="font-weight:500">${p.nombre}</td>
+        <td style="font-size:12px;color:var(--text2)">${p.necesidad || '—'}</td>
+        <td style="font-size:12px;color:var(--text2)">${p.expectativa || '—'}</td>
+        <td><span style="font-size:10px;padding:2px 7px;border-radius:8px;background:${q.bg};color:${q.color}">${q.label}</span></td>
+        <td><span class="riesgo-pill">Riesgo</span></td>
+        <td>${ro.riesgo}</td>
+        <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)">4.2 / 6.1</td>
+      </tr>`);
+    if (ro.oportunidad) rows.push(`
+      <tr>
+        <td style="font-weight:500">${p.nombre}</td>
+        <td style="font-size:12px;color:var(--text2)">${p.necesidad || '—'}</td>
+        <td style="font-size:12px;color:var(--text2)">${p.expectativa || '—'}</td>
+        <td><span style="font-size:10px;padding:2px 7px;border-radius:8px;background:${q.bg};color:${q.color}">${q.label}</span></td>
+        <td><span class="oport-pill">Oportunidad</span></td>
+        <td>${ro.oportunidad}</td>
+        <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)">4.2 / 6.1</td>
+      </tr>`);
+  });
+  if (rows.length === 0) { alert('Ingresa al menos un riesgo u oportunidad antes de generar el output.'); return; }
+  tbody.innerHTML = rows.join('');
+  document.getElementById('ro-output').style.display = 'block';
+  document.getElementById('ro-output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function irAStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById(`panel-${i}`).classList.toggle('active', i === n);
+    document.getElementById(`step-btn-${i}`).classList.toggle('active', i === n);
+  });
+  if (n === 2) renderMapa();
+  if (n === 3) renderROCards();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function reiniciar() {
+  pis = []; roData = {}; evalActual = { poder: null, impacto: null };
+  limpiarForm(); renderLista();
+  document.getElementById('ro-output').style.display = 'none';
+}
+</script>
+</body>
+</html>
