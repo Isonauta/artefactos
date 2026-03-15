@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liderazgo y Compromiso — Cultura Isonauta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F6F2;
+    --surface: #FFFFFF;
+    --surface2: #F0EEE8;
+    --border: rgba(0,0,0,0.10);
+    --border2: rgba(0,0,0,0.18);
+    --text: #1A1916;
+    --text2: #6B6A64;
+    --text3: #9C9A92;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    --ocre: #C9922A;
+    --ocre-light: #F5E6C8;
+    --ocre-dark: #8B6218;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+  .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  /* Topbar */
+  .topbar { background: #1A1916; padding: 0 24px; }
+  .topbar-inner {
+    max-width: 760px; margin: 0 auto;
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 14px 0 12px;
+    border-bottom: 1px solid rgba(201,146,42,0.25);
+  }
+  .brand-left { display: flex; align-items: baseline; gap: 14px; }
+  .brand-name { font-size: 17px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ocre); }
+  .brand-tagline { font-size: 10px; font-weight: 300; font-style: italic; color: rgba(201,146,42,0.5); }
+  .brand-right { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.22); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* Hero */
+  .hero { background: #1A1916; padding: 32px 24px 36px; border-bottom: 1px solid rgba(201,146,42,0.12); }
+  .hero-inner { max-width: 760px; margin: 0 auto; }
+  .hero-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: rgba(201,146,42,0.5); text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 10px; display: flex; align-items: center; gap: 10px;
+  }
+  .hero-label::after { content: ''; display: block; height: 1px; width: 28px; background: var(--ocre); opacity: 0.3; }
+  .hero h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; color: #F7F6F2; margin-bottom: 6px; }
+  .hero h1 span { color: var(--ocre); }
+  .hero p { font-size: 13px; color: rgba(247,246,242,0.4); line-height: 1.6; font-weight: 300; max-width: 500px; }
+
+  /* Progress bar */
+  .progress-wrap { padding: 20px 0 0; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-bottom: 6px; }
+  .progress-outer { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+  .progress-inner { height: 100%; background: var(--ocre); border-radius: 2px; transition: width .4s ease; }
+
+  /* Main */
+  .main { padding: 32px 0; }
+
+  /* Pregunta */
+  .pregunta-card {
+    background: var(--surface); border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg); padding: 22px 24px;
+    box-shadow: var(--shadow); margin-bottom: 12px;
+    transition: border-color .2s;
+  }
+  .pregunta-card.respondida { border-color: rgba(201,146,42,0.3); }
+
+  .pregunta-num {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--ocre); text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .pregunta-texto { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 18px; font-weight: 400; }
+
+  .likert { display: flex; gap: 6px; flex-wrap: wrap; }
+  .likert-btn {
+    flex: 1; min-width: 90px; padding: 8px 6px;
+    border: 0.5px solid var(--border2); border-radius: var(--radius);
+    background: var(--bg); cursor: pointer; font-size: 11px;
+    color: var(--text2); font-family: 'DM Sans', sans-serif;
+    text-align: center; transition: all .15s; line-height: 1.3;
+  }
+  .likert-btn:hover { border-color: var(--ocre); color: var(--text); background: var(--ocre-light); }
+  .likert-btn.selected { border-color: var(--ocre); background: var(--ocre-light); color: var(--ocre-dark); font-weight: 500; }
+  .likert-btn .val { font-size: 16px; font-weight: 600; display: block; margin-bottom: 2px; }
+
+  /* Acción */
+  .action-bar { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; align-items: center; }
+  .btn-ghost {
+    font-size: 13px; padding: 8px 18px;
+    border: 0.5px solid var(--border2); border-radius: var(--radius);
+    background: var(--surface); cursor: pointer; color: var(--text2);
+    font-family: 'DM Sans', sans-serif; transition: all .15s;
+  }
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); }
+  .btn-main {
+    font-size: 13px; font-weight: 500; padding: 9px 22px;
+    border: 0.5px solid var(--ocre-dark); border-radius: var(--radius);
+    background: #1A1916; cursor: pointer; color: var(--ocre);
+    font-family: 'DM Sans', sans-serif; transition: opacity .15s;
+  }
+  .btn-main:hover { opacity: 0.85; }
+  .btn-main:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* Resultado */
+  #resultado { display: none; margin-top: 32px; }
+  .res-header { text-align: center; margin-bottom: 28px; }
+  .res-score-wrap {
+    width: 120px; height: 120px; border-radius: 50%;
+    border: 3px solid var(--ocre); margin: 0 auto 16px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: var(--surface); box-shadow: 0 0 0 8px var(--ocre-light);
+  }
+  .res-score { font-size: 36px; font-weight: 600; color: var(--ocre); letter-spacing: -1px; line-height: 1; }
+  .res-score-max { font-size: 12px; color: var(--text3); font-family: 'DM Mono', monospace; }
+  .res-nivel { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .res-desc { font-size: 13px; color: var(--text2); line-height: 1.65; max-width: 480px; margin: 0 auto; }
+
+  .res-barras { margin: 24px 0; }
+  .res-barra-wrap { margin-bottom: 12px; }
+  .res-barra-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+  .res-barra-label span:last-child { color: var(--text3); font-family: 'DM Mono', monospace; font-size: 11px; }
+  .res-barra-outer { height: 8px; border-radius: 4px; background: var(--surface2); overflow: hidden; }
+  .res-barra-inner { height: 100%; border-radius: 4px; transition: width .6s cubic-bezier(.4,0,.2,1); }
+
+  .res-interpretacion {
+    background: var(--surface); border: 0.5px solid var(--border);
+    border-left: 3px solid var(--ocre); border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    padding: 18px 20px; margin-bottom: 20px;
+  }
+  .res-interpretacion .titulo { font-size: 11px; font-weight: 600; color: var(--ocre); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .res-interpretacion p { font-size: 13px; color: var(--text2); line-height: 1.65; }
+
+  .cta-card {
+    background: #1A1916; border-radius: var(--radius-lg);
+    padding: 24px; text-align: center; margin-top: 8px;
+  }
+  .cta-card p { font-size: 13px; color: rgba(247,246,242,0.5); margin-bottom: 14px; line-height: 1.6; }
+  .cta-btn {
+    font-size: 13px; font-weight: 500; padding: 9px 22px;
+    border: 0.5px solid var(--ocre-dark); border-radius: var(--radius);
+    background: transparent; cursor: pointer; color: var(--ocre);
+    font-family: 'DM Sans', sans-serif; transition: opacity .15s;
+  }
+  .cta-btn:hover { opacity: 0.8; }
+
+  /* Footer */
+  .footer { border-top: 0.5px solid var(--border); padding: 20px 0 0; display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
+  .footer-brand { font-size: 11px; color: var(--ocre); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .footer-tagline { font-size: 10px; color: var(--text3); font-style: italic; }
+
+  @media (max-width: 560px) {
+    .likert { flex-direction: column; }
+    .likert-btn { min-width: unset; display: flex; align-items: center; gap: 10px; }
+    .likert-btn .val { font-size: 14px; margin-bottom: 0; }
+  }
+  @media print {
+    .topbar, .action-bar, .btn-ghost, .btn-main, .cta-card { display: none !important; }
+    #resultado { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-left">
+      <span class="brand-name">Isonauta</span>
+      <span class="brand-tagline">No hables lindo, piensa hondo</span>
+    </div>
+    <span class="brand-right">Artefacto</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <p class="hero-label">Modelo Cultura Isonauta</p>
+    <h1>Liderazgo y <span>Compromiso</span></h1>
+    <p>Autoevaluación de la dimensión de liderazgo en tu organización. 7 afirmaciones, escala Likert de 5 puntos. Resultado inmediato.</p>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="prog-texto">0 de 7 respondidas</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="progress-outer"><div class="progress-inner" id="prog-bar" style="width:0%"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="main" id="formulario">
+
+    <div id="preguntas"></div>
+
+    <div class="action-bar">
+      <button class="btn-ghost" onclick="reiniciar()">Reiniciar</button>
+      <button class="btn-main" id="btn-resultado" onclick="verResultado()" disabled>Ver resultado →</button>
+    </div>
+
+    <div id="resultado">
+      <div class="res-header">
+        <div class="res-score-wrap">
+          <span class="res-score" id="res-num">—</span>
+          <span class="res-score-max">ICC (0–100)</span>
+        </div>
+        <p id="res-rango" style="font-family:'DM Mono',monospace;font-size:11px;margin-bottom:6px;font-weight:500"></p>
+        <p class="res-nivel" id="res-nivel"></p>
+        <p class="res-desc" id="res-desc"></p>
+      </div>
+
+      <div class="res-barras" id="res-barras"></div>
+
+      <div class="res-interpretacion" id="res-interpretacion">
+        <p class="titulo">Lectura sistémica</p>
+        <p id="res-lectura"></p>
+      </div>
+
+      <div class="cta-card">
+        <p>Esta es una muestra de una dimensión del Modelo Cultura Isonauta.<br>El diagnóstico completo incluye 7 dimensiones y un informe ejecutivo por organización.</p>
+        <button class="cta-btn" onclick="window.open('https://artefactos.vercel.app','_blank')">Conocer el modelo completo →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span class="footer-brand">Isonauta</span>
+    <span class="footer-tagline">No hables lindo, piensa hondo</span>
+  </div>
+</div>
+
+<script>
+const PREGUNTAS = [
+  "Los líderes de mi organización comunican claramente la importancia de la calidad.",
+  "Los líderes predican con el ejemplo respecto al cumplimiento de procesos.",
+  "Cuando surge un problema, los líderes acompañan y apoyan en vez de buscar culpables.",
+  "Siento que la dirección está comprometida con mejorar continuamente.",
+  "Los líderes reconocen y valoran el trabajo bien hecho.",
+  "La comunicación de los líderes es coherente: dicen y hacen lo mismo.",
+  "Confío en la disposición de mis líderes para escuchar inquietudes o ideas."
+];
+
+const OPCIONES = [
+  { val: 1, label: "Totalmente en desacuerdo" },
+  { val: 2, label: "En desacuerdo" },
+  { val: 3, label: "Ni de acuerdo ni en desacuerdo" },
+  { val: 4, label: "De acuerdo" },
+  { val: 5, label: "Totalmente de acuerdo" }
+];
+
+const NIVELES = [
+  { min: 0,  max: 54, nivel: "Crítico — Ruptura Cultural", rango: "ICC 0–54", color: "#A32D2D", bg: "#FCEBEB", desc: "La cultura de calidad en la dimensión de liderazgo está rota, invisibilizada o capturada por la operación urgente. Predomina la desconfianza, la incoherencia y el cortoplacismo.", lectura: "Un liderazgo con este índice opera desde el discurso sin respaldo en la práctica. No hay lenguaje común — cada área interpreta el liderazgo desde su propia realidad desconectada del sistema. Esto genera toxicidad, caos o parálisis. Se requiere intervención prioritaria en coherencia y compromiso directivo." },
+  { min: 55, max: 69, nivel: "Alerta — Cohesión Fragmentada", rango: "ICC 55–69", color: "#854F0B", bg: "#FAEEDA", desc: "Hay zonas de alta coherencia y zonas donde el liderazgo es solo discurso. Doble discurso, prioridades contradictorias. Los mandos medios se transforman en traductores culturales y se produce desgaste.", lectura: "El liderazgo muestra intención, pero la traducción en comportamientos cotidianos es irregular. La identidad del sistema está tensionada: se sostiene, pero cruje. El foco debe estar en cerrar la brecha entre lo que los líderes declaran y lo que las personas experimentan en el día a día." },
+  { min: 70, max: 84, nivel: "Funcional — Coherencia Operativa", rango: "ICC 70–84", color: "#0F6E56", bg: "#E1F5EE", desc: "El sistema funciona bien gracias a normas, roles, procesos y métricas. Hay orden y consistencia, pero más desde la estructura que desde la convicción. Los equipos entienden la calidad, pero todavía no la habitan.", lectura: "El liderazgo tiene credibilidad estructural instalada. El cumplimiento es estable, pero requiere vigilancia y refuerzo frecuente. El desafío es profundizar la transición desde el cumplimiento hacia la convicción." },
+  { min: 85, max: 100, nivel: "Óptimo — Coherencia Orgánica", rango: "ICC 85–100", color: "#185FA5", bg: "#E6F1FB", desc: "La calidad se vive como identidad y no como exigencia. Lo que se piensa, se comunica y se hace está completamente alineado. No requiere supervisión excesiva: la cultura sostiene los procesos.", lectura: "Un liderazgo en este nivel actúa como catalizador sistémico de la cultura de calidad. Existe un lenguaje compartido que permite que la calidad opere como un medio simbólicamente generalizado dentro del sistema." }
+];
+
+let respuestas = {};
+
+function renderPreguntas() {
+  const el = document.getElementById('preguntas');
+  el.innerHTML = PREGUNTAS.map((p, i) => `
+    <div class="pregunta-card" id="card-${i}">
+      <p class="pregunta-num">Afirmación ${i + 1} de ${PREGUNTAS.length}</p>
+      <p class="pregunta-texto">${p}</p>
+      <div class="likert">
+        ${OPCIONES.map(o => `
+          <button class="likert-btn" onclick="responder(${i}, ${o.val}, this)">
+            <span class="val">${o.val}</span>
+            ${o.label}
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function responder(idx, val, btn) {
+  respuestas[idx] = val;
+  const card = document.getElementById(`card-${idx}`);
+  card.querySelectorAll('.likert-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  card.classList.add('respondida');
+  actualizarProgreso();
+}
+
+function actualizarProgreso() {
+  const n = Object.keys(respuestas).length;
+  const pct = Math.round(n / PREGUNTAS.length * 100);
+  document.getElementById('prog-texto').textContent = `${n} de ${PREGUNTAS.length} respondidas`;
+  document.getElementById('prog-pct').textContent = `${pct}%`;
+  document.getElementById('prog-bar').style.width = pct + '%';
+  document.getElementById('btn-resultado').disabled = n < PREGUNTAS.length;
+}
+
+function verResultado() {
+  const total = Object.values(respuestas).reduce((a, b) => a + b, 0);
+  const icc = Math.round((total / 35) * 100);
+  const nivel = NIVELES.find(n => icc >= n.min && icc <= n.max);
+
+  document.getElementById('res-num').textContent = icc;
+  document.getElementById('res-nivel').textContent = nivel.nivel;
+  document.getElementById('res-nivel').style.color = nivel.color;
+  const rangoEl = document.getElementById('res-rango');
+  if(rangoEl) { rangoEl.textContent = nivel.rango; rangoEl.style.color = nivel.color; }
+  document.getElementById('res-desc').textContent = nivel.desc;
+  document.getElementById('res-lectura').textContent = nivel.lectura;
+
+  // Barras por pregunta
+  const barras = PREGUNTAS.map((p, i) => {
+    const v = respuestas[i];
+    const pct = Math.round(v / 5 * 100);
+    const color = v <= 2 ? '#A32D2D' : v === 3 ? '#BA7517' : '#0F6E56';
+    return `
+      <div class="res-barra-wrap">
+        <div class="res-barra-label">
+          <span style="font-size:12px;color:var(--text2)">Afirmación ${i+1}</span>
+          <span>${v} / 5</span>
+        </div>
+        <div class="res-barra-outer">
+          <div class="res-barra-inner" style="width:${pct}%;background:${color}"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  document.getElementById('res-barras').innerHTML = barras;
+
+  // Colorear card interpretación
+  const ri = document.getElementById('res-interpretacion');
+  ri.style.borderLeftColor = nivel.color;
+  ri.style.background = nivel.bg;
+
+  document.getElementById('resultado').style.display = 'block';
+  document.getElementById('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function reiniciar() {
+  respuestas = {};
+  document.getElementById('resultado').style.display = 'none';
+  actualizarProgreso();
+  renderPreguntas();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+renderPreguntas();
+</script>
+</body>
+</html>
