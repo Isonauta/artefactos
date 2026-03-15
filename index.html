@@ -7,168 +7,79 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #F7F6F2;
-    --surface: #FFFFFF;
-    --surface2: #F0EEE8;
-    --border: rgba(0,0,0,0.10);
-    --border2: rgba(0,0,0,0.18);
-    --text: #1A1916;
-    --text2: #6B6A64;
-    --text3: #9C9A92;
-    --radius: 10px;
-    --radius-lg: 16px;
+    --bg: #F7F6F2; --surface: #FFFFFF; --surface2: #F0EEE8;
+    --border: rgba(0,0,0,0.10); --border2: rgba(0,0,0,0.18);
+    --text: #1A1916; --text2: #6B6A64; --text3: #9C9A92;
+    --radius: 10px; --radius-lg: 16px;
     --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
-    --ocre: #C9922A;
-    --ocre-light: #F5E6C8;
-    --ocre-dark: #8B6218;
+    --ocre: #C9922A; --ocre-light: #F5E6C8; --ocre-dark: #8B6218;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
   /* Topbar */
   .topbar { background: #1A1916; padding: 0 24px; }
   .topbar-inner {
     max-width: 960px; margin: 0 auto;
-    display: flex; align-items: baseline; justify-content: space-between;
-    padding: 16px 0 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 0 16px;
     border-bottom: 1px solid rgba(201,146,42,0.25);
   }
-  .brand-left { display: flex; align-items: baseline; gap: 16px; }
-  .brand-name {
-    font-size: 20px; font-weight: 600;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--ocre);
-  }
-  .brand-tagline {
-    font-size: 11px; font-weight: 300; font-style: italic;
-    color: rgba(201,146,42,0.55); letter-spacing: 0.03em;
-  }
-  .brand-right {
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    color: rgba(255,255,255,0.25); letter-spacing: 0.06em; text-transform: uppercase;
-  }
+  .brand-left { display: flex; align-items: baseline; gap: 14px; }
+  .brand-name { font-size: 28px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ocre); line-height: 1; }
+  .brand-tagline { font-size: 11px; font-weight: 300; font-style: italic; color: rgba(201,146,42,0.5); letter-spacing: 0.03em; }
+  .brand-right { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.22); letter-spacing: 0.08em; text-transform: uppercase; }
 
   /* Hero */
-  .hero {
-    background: #1A1916;
-    padding: 48px 24px 52px;
-    border-bottom: 1px solid rgba(201,146,42,0.15);
-  }
+  .hero { background: #1A1916; padding: 48px 24px 56px; border-bottom: 1px solid rgba(201,146,42,0.15); }
   .hero-inner { max-width: 960px; margin: 0 auto; }
-  .hero-label {
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    color: rgba(201,146,42,0.5); text-transform: uppercase;
-    letter-spacing: 0.1em; margin-bottom: 14px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .hero-label::after {
-    content: ''; display: block; height: 1px; width: 32px;
-    background: var(--ocre); opacity: 0.3;
-  }
-  .hero h1 {
-    font-size: 32px; font-weight: 600; letter-spacing: -0.6px;
-    color: #F7F6F2; margin-bottom: 10px; line-height: 1.15;
-  }
+  .hero-label { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(201,146,42,0.5); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .hero-label::after { content: ''; display: block; height: 1px; width: 32px; background: var(--ocre); opacity: 0.3; }
+  .hero h1 { font-size: 48px; font-weight: 600; letter-spacing: -1px; color: #F7F6F2; margin-bottom: 12px; line-height: 1.1; }
   .hero h1 span { color: var(--ocre); }
-  .hero p {
-    font-size: 14px; color: rgba(247,246,242,0.45);
-    max-width: 480px; line-height: 1.65; font-weight: 300;
-  }
+  .hero-desc { font-size: 15px; color: rgba(247,246,242,0.45); max-width: 520px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+
+  .artefacto-explicacion { border-left: 2px solid rgba(201,146,42,0.35); padding: 14px 20px; max-width: 560px; }
+  .artefacto-explicacion .exp-label { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(201,146,42,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .artefacto-explicacion p { font-size: 13px; color: rgba(247,246,242,0.32); line-height: 1.7; font-weight: 300; font-style: italic; }
+
+  /* Video */
+  .video-wrap { max-width: 960px; margin: 0 auto; padding: 36px 24px 0; }
+  .video-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+  .video-label::after { content: ''; flex: 1; height: 0.5px; background: var(--border2); }
+  .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: var(--radius-lg); background: #1A1916; border: 0.5px solid var(--border2); }
+  .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: var(--radius-lg); }
+  .video-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+  .video-placeholder .play-icon { width: 56px; height: 56px; border-radius: 50%; border: 1.5px solid rgba(201,146,42,0.3); display: flex; align-items: center; justify-content: center; }
+  .video-placeholder .play-icon svg { fill: var(--ocre); opacity: 0.4; }
+  .video-placeholder p { font-size: 12px; color: rgba(255,255,255,0.18); font-family: 'DM Mono', monospace; }
 
   /* Main */
-  .main { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+  .main { max-width: 960px; margin: 0 auto; padding: 36px 24px 80px; }
 
-  .section-label {
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em;
-    margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
-  }
-  .section-label::after {
-    content: ''; flex: 1; height: 0.5px; background: var(--border2);
-  }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .section-label::after { content: ''; flex: 1; height: 0.5px; background: var(--border2); }
 
-  /* Grid */
-  .artefactos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
-    margin-bottom: 48px;
-  }
+  .artefactos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 48px; }
 
-  .artefacto-card {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 20px 22px 18px;
-    box-shadow: var(--shadow);
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    transition: border-color .15s, box-shadow .15s;
-    position: relative;
-    overflow: hidden;
-  }
-  .artefacto-card:hover {
-    border-color: var(--ocre);
-    box-shadow: 0 4px 20px rgba(201,146,42,0.12);
-  }
-  .artefacto-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0;
-    width: 3px; height: 100%;
-    background: var(--ocre);
-    opacity: 0;
-    transition: opacity .15s;
-  }
+  .artefacto-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 20px 22px 18px; box-shadow: var(--shadow); text-decoration: none; color: inherit; display: block; transition: border-color .15s, box-shadow .15s; position: relative; overflow: hidden; }
+  .artefacto-card:hover { border-color: var(--ocre); box-shadow: 0 4px 20px rgba(201,146,42,0.12); }
+  .artefacto-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--ocre); opacity: 0; transition: opacity .15s; }
   .artefacto-card:hover::before { opacity: 1; }
 
-  .card-tag {
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    color: var(--ocre); text-transform: uppercase; letter-spacing: 0.08em;
-    margin-bottom: 10px;
-  }
-  .card-title {
-    font-size: 16px; font-weight: 600; letter-spacing: -0.2px;
-    margin-bottom: 6px; color: var(--text);
-  }
-  .card-desc {
-    font-size: 12px; color: var(--text2); line-height: 1.6;
-    margin-bottom: 14px;
-  }
-  .card-meta {
-    display: flex; align-items: center; justify-content: space-between;
-    padding-top: 12px; border-top: 0.5px solid var(--border);
-  }
-  .card-ref {
-    font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3);
-  }
-  .card-arrow {
-    font-size: 14px; color: var(--ocre); opacity: 0.6;
-    transition: opacity .15s, transform .15s;
-  }
+  .card-tag { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ocre); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .card-title { font-size: 16px; font-weight: 600; letter-spacing: -0.2px; margin-bottom: 6px; color: var(--text); }
+  .card-desc { font-size: 12px; color: var(--text2); line-height: 1.6; margin-bottom: 14px; }
+  .card-meta { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 0.5px solid var(--border); }
+  .card-ref { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); }
+  .card-arrow { font-size: 14px; color: var(--ocre); opacity: 0.6; transition: opacity .15s, transform .15s; }
   .artefacto-card:hover .card-arrow { opacity: 1; transform: translateX(3px); }
 
-  /* Próximamente */
-  .artefacto-card.coming {
-    opacity: 0.5; pointer-events: none; cursor: default;
-  }
-  .coming-badge {
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    background: var(--surface2); color: var(--text3);
-    padding: 2px 8px; border-radius: 10px;
-  }
+  .artefacto-card.coming { opacity: 0.45; pointer-events: none; cursor: default; }
+  .coming-badge { font-family: 'DM Mono', monospace; font-size: 10px; background: var(--surface2); color: var(--text3); padding: 2px 8px; border-radius: 10px; }
 
   /* Footer */
-  .footer {
-    border-top: 0.5px solid var(--border);
-    padding: 20px 0 0;
-    display: flex; justify-content: space-between; align-items: center;
-  }
+  .footer { border-top: 0.5px solid var(--border); padding: 20px 0 0; display: flex; justify-content: space-between; align-items: center; }
   .footer-brand { font-size: 11px; color: var(--ocre); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
   .footer-tagline { font-size: 10px; color: var(--text3); font-style: italic; }
 </style>
@@ -181,15 +92,26 @@
       <span class="brand-name">Isonauta</span>
       <span class="brand-tagline">No hables lindo, piensa hondo</span>
     </div>
-    <span class="brand-right">Artefactos</span>
+    <span class="brand-right">Laboratorio de la Gestión</span>
   </div>
 </div>
 
 <div class="hero">
   <div class="hero-inner">
-    <p class="hero-label">Laboratorio de Gestión</p>
+    <p class="hero-label">Laboratorio de la Gestión</p>
     <h1>Artefactos <span>Isonauta</span></h1>
-    <p>Herramientas interactivas para diagnóstico organizacional, análisis de contexto y sistemas de gestión. Diseñadas para líderes de sistemas de gestión.</p>
+    <p class="hero-desc">Herramientas interactivas para diagnóstico organizacional, análisis de contexto y sistemas de gestión. Diseñadas para líderes de sistemas de gestión.</p>
+    <div class="artefacto-explicacion">
+      <p class="exp-label">¿Por qué los llamamos Artefactos?</p>
+      <p>Un artefacto no es un formulario ni una plantilla. Es un objeto que porta conocimiento y produce pensamiento. En Isonauta, cada artefacto tiene criterio incorporado — no te dice qué responder, te obliga a pensar hondo antes de responder.</p>
+    </div>
+  </div>
+</div>
+
+<div class="video-wrap">
+  <p class="video-label">Bienvenida</p>
+  <div class="video-container">
+    <iframe src="https://www.youtube.com/embed/r5F22jCDV3I?rel=0&modestbranding=1" allowfullscreen></iframe>
   </div>
 </div>
 
@@ -202,31 +124,57 @@
     <a class="artefacto-card" href="/pestel.html">
       <p class="card-tag">Artefacto · Contexto</p>
       <p class="card-title">Análisis PESTEL</p>
-      <p class="card-desc">Diagnóstico de contexto organizacional con criterios de ponderación por juicio experto. Genera outputs para la matriz de cuestiones relevantes.</p>
-      <div class="card-meta">
-        <span class="card-ref">Cláusula 4.1</span>
-        <span class="card-arrow">→</span>
-      </div>
+      <p class="card-desc">Diagnóstico de contexto con criterios de ponderación por juicio experto. Genera outputs para la matriz de cuestiones relevantes.</p>
+      <div class="card-meta"><span class="card-ref">Cláusula 4.1</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="artefacto-card" href="/partes-interesadas.html">
+      <p class="card-tag">Artefacto · Contexto</p>
+      <p class="card-title">Partes Interesadas</p>
+      <p class="card-desc">Identifica, evalúa y deriva riesgos y oportunidades desde cada parte interesada. Mapa poder × impacto con output directo al SGC.</p>
+      <div class="card-meta"><span class="card-ref">Cláusula 4.2 · 6.1</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="artefacto-card" href="/foda.html">
+      <p class="card-tag">Artefacto · Planificación</p>
+      <p class="card-title">FODA Sistémico</p>
+      <p class="card-desc">No listes factores — cruza variables y deriva decisiones estratégicas. Cuatro tipos de estrategia con output directo al SGC.</p>
+      <div class="card-meta"><span class="card-ref">Cláusula 6.1</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="artefacto-card" href="/liderazgo.html">
+      <p class="card-tag">Artefacto · Cultura</p>
+      <p class="card-title">Liderazgo y Compromiso</p>
+      <p class="card-desc">Autoevaluación de la dimensión de liderazgo del Modelo Cultura Isonauta. Resultado en el Índice de Cohesión Cultural (ICC).</p>
+      <div class="card-meta"><span class="card-ref">Modelo ICC · ISO 9001</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="artefacto-card" href="/no-conformidades.html">
+      <p class="card-tag">Artefacto · Mejora continua</p>
+      <p class="card-title">No Conformidades</p>
+      <p class="card-desc">Análisis de causa raíz con 5 Por qués integrados. Distingue corrección de acción correctiva. Genera ficha completa para el SGC.</p>
+      <div class="card-meta"><span class="card-ref">Cláusula 10.2</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="artefacto-card" href="https://chatgpt.com/g/g-a9RPqp9DT-isonauta" target="_blank">
+      <p class="card-tag">Asistente · IA Conversacional</p>
+      <p class="card-title">Isonauta GPT</p>
+      <p class="card-desc">Asistente especializado en sistemas de gestión ISO, cultura organizacional y diagnóstico. Responde desde la mentalidad Isonauta.</p>
+      <div class="card-meta"><span class="card-ref">ChatGPT · OpenAI</span><span class="card-arrow">→</span></div>
     </a>
 
     <div class="artefacto-card coming">
-      <p class="card-tag">Artefacto · Partes interesadas</p>
-      <p class="card-title">Matriz de Partes Interesadas</p>
-      <p class="card-desc">Identificación y priorización de partes interesadas según poder, legitimidad e interés.</p>
-      <div class="card-meta">
-        <span class="card-ref">Cláusula 4.2</span>
-        <span class="coming-badge">Próximamente</span>
-      </div>
+      <p class="card-tag">Artefacto · Planificación</p>
+      <p class="card-title">Objetivos de Calidad</p>
+      <p class="card-desc">Define y vincula objetivos estratégicos con indicadores y responsables.</p>
+      <div class="card-meta"><span class="card-ref">Cláusula 6.2</span><span class="coming-badge">Próximamente</span></div>
     </div>
 
     <div class="artefacto-card coming">
-      <p class="card-tag">Artefacto · Riesgos</p>
-      <p class="card-title">Análisis FODA Sistémico</p>
-      <p class="card-desc">Cruce de factores internos y externos con vinculación directa a riesgos y oportunidades del SGC.</p>
-      <div class="card-meta">
-        <span class="card-ref">Cláusula 4.1</span>
-        <span class="coming-badge">Próximamente</span>
-      </div>
+      <p class="card-tag">Artefacto · Operación</p>
+      <p class="card-title">Evaluación de Proveedores</p>
+      <p class="card-desc">Criterios sistémicos para evaluar y gestionar el desempeño de proveedores críticos.</p>
+      <div class="card-meta"><span class="card-ref">Cláusula 8.4</span><span class="coming-badge">Próximamente</span></div>
     </div>
 
   </div>
@@ -237,6 +185,5 @@
   </div>
 
 </div>
-
 </body>
 </html>
