@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FODA Sistémico — Isonauta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F6F2; --surface: #FFFFFF; --surface2: #F0EEE8;
+    --border: rgba(0,0,0,0.10); --border2: rgba(0,0,0,0.18);
+    --text: #1A1916; --text2: #6B6A64; --text3: #9C9A92;
+    --radius: 10px; --radius-lg: 16px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    --ocre: #C9922A; --ocre-light: #F5E6C8; --ocre-dark: #8B6218;
+    --f-color: #0F6E56; --f-bg: #E1F5EE;
+    --o-color: #185FA5; --o-bg: #E6F1FB;
+    --d-color: #854F0B; --d-bg: #FAEEDA;
+    --a-color: #A32D2D; --a-bg: #FCEBEB;
+    --fo-color: #0F6E56; --fo-bg: #E1F5EE;
+    --fa-color: #854F0B; --fa-bg: #FAEEDA;
+    --do-color: #185FA5; --do-bg: #E6F1FB;
+    --da-color: #A32D2D; --da-bg: #FCEBEB;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 0 0 80px; }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+  /* Topbar */
+  .topbar { background: #1A1916; padding: 0 24px; }
+  .topbar-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: baseline; justify-content: space-between; padding: 14px 0 12px; border-bottom: 1px solid rgba(201,146,42,0.25); }
+  .brand-name { font-size: 17px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ocre); }
+  .brand-tagline { font-size: 10px; font-weight: 300; font-style: italic; color: rgba(201,146,42,0.5); margin-left: 14px; }
+  .brand-right { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.22); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* Hero */
+  .hero { background: #1A1916; padding: 30px 24px 34px; border-bottom: 1px solid rgba(201,146,42,0.12); }
+  .hero-inner { max-width: 900px; margin: 0 auto; }
+  .hero-label { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(201,146,42,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .hero-label::after { content: ''; display: block; height: 1px; width: 28px; background: var(--ocre); opacity: 0.3; }
+  .hero h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; color: #F7F6F2; margin-bottom: 6px; }
+  .hero h1 span { color: var(--ocre); }
+  .hero p { font-size: 13px; color: rgba(247,246,242,0.4); line-height: 1.6; font-weight: 300; max-width: 540px; }
+
+  /* Steps */
+  .steps-nav { display: flex; gap: 0; margin: 28px 0 24px; border: 0.5px solid var(--border2); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); }
+  .step-btn { flex: 1; padding: 12px 8px; font-size: 12px; font-weight: 500; border: none; background: none; cursor: pointer; color: var(--text3); font-family: 'DM Sans', sans-serif; border-right: 0.5px solid var(--border); transition: all .15s; text-align: center; }
+  .step-btn:last-child { border-right: none; }
+  .step-btn.active { background: #1A1916; color: var(--ocre); }
+  .step-btn .step-num { font-family: 'DM Mono', monospace; font-size: 10px; display: block; margin-bottom: 2px; opacity: 0.6; }
+
+  .step-panel { display: none; }
+  .step-panel.active { display: block; }
+
+  /* Card */
+  .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); margin-bottom: 14px; }
+  .card-label { font-size: 11px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+
+  /* Factor input */
+  .factor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width:580px) { .factor-grid { grid-template-columns: 1fr; } }
+
+  .factor-col { }
+  .factor-col-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 0.5px solid var(--border); }
+  .factor-col-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .factor-col-title { font-size: 13px; font-weight: 600; }
+  .factor-col-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .factor-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .factor-item input { flex: 1; font-size: 13px; padding: 7px 10px; border: 0.5px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; transition: border-color .15s; }
+  .factor-item input:focus { outline: none; border-color: var(--ocre); background: var(--surface); }
+  .factor-item input::placeholder { color: var(--text3); }
+  .factor-del { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 16px; padding: 2px 6px; border-radius: 4px; transition: all .15s; }
+  .factor-del:hover { color: #A32D2D; background: #FCEBEB; }
+  .btn-add-factor { font-size: 11px; padding: 5px 12px; border: 0.5px dashed var(--border2); border-radius: var(--radius); background: none; cursor: pointer; color: var(--text3); font-family: 'DM Sans', sans-serif; transition: all .15s; margin-top: 4px; }
+  .btn-add-factor:hover { border-color: var(--ocre); color: var(--text); background: var(--ocre-light); }
+
+  /* Cruce sistémico */
+  .cruce-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 0; box-shadow: var(--shadow); margin-bottom: 14px; overflow: hidden; }
+  .cruce-header { display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-bottom: 0.5px solid var(--border); }
+  .cruce-badge { font-size: 11px; font-weight: 600; padding: 3px 12px; border-radius: 20px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.04em; }
+  .cruce-desc { font-size: 12px; color: var(--text3); }
+  .cruce-body { padding: 16px 20px; }
+  .cruce-pares { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .cruce-par { font-size: 11px; padding: 4px 10px; border-radius: 8px; border: 0.5px solid transparent; }
+
+  .cruce-pregunta { font-size: 12px; color: var(--text2); margin-bottom: 8px; font-style: italic; }
+  textarea.cruce-input { width: 100%; font-size: 13px; padding: 9px 12px; border: 0.5px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; resize: vertical; min-height: 72px; line-height: 1.55; transition: border-color .15s; }
+  textarea.cruce-input:focus { outline: none; border-color: var(--ocre); background: var(--surface); }
+  textarea.cruce-input::placeholder { color: var(--text3); }
+
+  /* Output tabla */
+  .outputs-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .outputs-table th { background: var(--surface2); padding: 8px 12px; text-align: left; font-size: 10px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text3); border-bottom: 0.5px solid var(--border); }
+  .outputs-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--border); vertical-align: top; line-height: 1.55; }
+  .outputs-table tr:last-child td { border-bottom: none; }
+  .tipo-pill { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+
+  /* Botones */
+  .action-bar { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .btn-ghost { font-size: 13px; padding: 8px 18px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--surface); cursor: pointer; color: var(--text2); font-family: 'DM Sans', sans-serif; transition: all .15s; }
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); }
+  .btn-main { font-size: 13px; font-weight: 500; padding: 9px 22px; border: 0.5px solid var(--ocre-dark); border-radius: var(--radius); background: #1A1916; cursor: pointer; color: var(--ocre); font-family: 'DM Sans', sans-serif; transition: opacity .15s; }
+  .btn-main:hover { opacity: 0.85; }
+
+  /* CTA */
+  .cta-card { background: #1A1916; border-radius: var(--radius-lg); padding: 22px; text-align: center; margin-top: 16px; }
+  .cta-card p { font-size: 13px; color: rgba(247,246,242,0.45); margin-bottom: 14px; line-height: 1.6; }
+  .cta-btn { font-size: 13px; font-weight: 500; padding: 9px 22px; border: 0.5px solid var(--ocre-dark); border-radius: var(--radius); background: transparent; cursor: pointer; color: var(--ocre); font-family: 'DM Sans', sans-serif; }
+
+  /* Footer */
+  .footer { border-top: 0.5px solid var(--border); padding: 20px 0 0; display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
+  .footer-brand { font-size: 11px; color: var(--ocre); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .footer-tagline { font-size: 10px; color: var(--text3); font-style: italic; }
+
+  /* Print */
+  @media print {
+    body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .topbar { background: #1A1916 !important; padding: 16px 24px; }
+    .hero { padding: 20px 24px; }
+    .steps-nav, .action-bar, .btn-ghost, .btn-main, .cta-card, #panel-1, #panel-2 { display: none !important; }
+    #panel-3 { display: block !important; }
+    #foda-output { display: block !important; }
+    .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+    .print-hide { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div style="display:flex;align-items:baseline">
+      <span class="brand-name">Isonauta</span>
+      <span class="brand-tagline">No hables lindo, piensa hondo</span>
+    </div>
+    <span class="brand-right">Artefacto</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <p class="hero-label">Planificación estratégica</p>
+    <h1>FODA <span>Sistémico</span></h1>
+    <p>No listes factores — cruza variables y deriva decisiones estratégicas. Output directo para cláusula 6.1 del SGC.</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="steps-nav">
+    <button class="step-btn active" id="step-btn-1" onclick="irAStep(1)">
+      <span class="step-num">Paso 1</span>Factores internos y externos
+    </button>
+    <button class="step-btn" id="step-btn-2" onclick="irAStep(2)">
+      <span class="step-num">Paso 2</span>Cruce sistémico
+    </button>
+    <button class="step-btn" id="step-btn-3" onclick="irAStep(3)">
+      <span class="step-num">Paso 3</span>Decisiones estratégicas
+    </button>
+  </div>
+
+  <!-- PASO 1 -->
+  <div class="step-panel active" id="panel-1">
+
+    <div class="card">
+      <p class="card-label" style="color:var(--ocre)">Factores internos</p>
+      <div class="factor-grid">
+        <div class="factor-col">
+          <div class="factor-col-header">
+            <div class="factor-col-dot" style="background:var(--f-color)"></div>
+            <div>
+              <p class="factor-col-title" style="color:var(--f-color)">Fortalezas</p>
+              <p class="factor-col-sub">Capacidades internas que generan ventaja</p>
+            </div>
+          </div>
+          <div id="lista-F"></div>
+          <button class="btn-add-factor" onclick="agregarFactor('F')">+ Agregar fortaleza</button>
+        </div>
+        <div class="factor-col">
+          <div class="factor-col-header">
+            <div class="factor-col-dot" style="background:var(--d-color)"></div>
+            <div>
+              <p class="factor-col-title" style="color:var(--d-color)">Debilidades</p>
+              <p class="factor-col-sub">Limitaciones internas que generan riesgo</p>
+            </div>
+          </div>
+          <div id="lista-D"></div>
+          <button class="btn-add-factor" onclick="agregarFactor('D')">+ Agregar debilidad</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-label" style="color:var(--ocre)">Factores externos</p>
+      <div class="factor-grid">
+        <div class="factor-col">
+          <div class="factor-col-header">
+            <div class="factor-col-dot" style="background:var(--o-color)"></div>
+            <div>
+              <p class="factor-col-title" style="color:var(--o-color)">Oportunidades</p>
+              <p class="factor-col-sub">Factores del entorno favorables al SGC</p>
+            </div>
+          </div>
+          <div id="lista-O"></div>
+          <button class="btn-add-factor" onclick="agregarFactor('O')">+ Agregar oportunidad</button>
+        </div>
+        <div class="factor-col">
+          <div class="factor-col-header">
+            <div class="factor-col-dot" style="background:var(--a-color)"></div>
+            <div>
+              <p class="factor-col-title" style="color:var(--a-color)">Amenazas</p>
+              <p class="factor-col-sub">Factores del entorno adversos al SGC</p>
+            </div>
+          </div>
+          <div id="lista-A"></div>
+          <button class="btn-add-factor" onclick="agregarFactor('A')">+ Agregar amenaza</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn-ghost" onclick="reiniciar()">Limpiar todo</button>
+      <button class="btn-main" onclick="irAStep(2)">Ir al cruce sistémico →</button>
+    </div>
+  </div>
+
+  <!-- PASO 2 -->
+  <div class="step-panel" id="panel-2">
+    <div id="cruces-container"></div>
+    <div class="action-bar">
+      <button class="btn-ghost" onclick="irAStep(1)">← Volver</button>
+      <button class="btn-main" onclick="irAStep(3)">Ver decisiones estratégicas →</button>
+    </div>
+  </div>
+
+  <!-- PASO 3 -->
+  <div class="step-panel" id="panel-3">
+    <div id="foda-output" style="display:none">
+      <div class="card">
+        <p class="card-label" style="color:var(--ocre)">Decisiones estratégicas — Cláusula 6.1</p>
+        <p style="font-size:12px;color:var(--text3);margin-bottom:16px">Derivadas del cruce sistémico de variables internas y externas</p>
+        <table class="outputs-table">
+          <thead>
+            <tr>
+              <th>Cruce</th>
+              <th>Tipo de estrategia</th>
+              <th>Decisión estratégica</th>
+              <th>Cláusula</th>
+            </tr>
+          </thead>
+          <tbody id="output-tbody"></tbody>
+        </table>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px flex-wrap:wrap" class="print-hide">
+        <button class="btn-ghost" onclick="window.print()" style="display:flex;align-items:center;gap:6px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Guardar como PDF
+        </button>
+      </div>
+      <div class="cta-card">
+        <p>Esta es una muestra del FODA Sistémico Isonauta.<br>El diagnóstico completo integra PESTEL, Partes Interesadas y Cultura Organizacional.</p>
+        <button class="cta-btn" onclick="window.open('https://artefactos.vercel.app','_blank')">Ver todos los artefactos →</button>
+      </div>
+    </div>
+    <div id="output-vacio" style="display:none">
+      <div class="card"><p style="color:var(--text3);font-size:13px;text-align:center;padding:12px 0">Completa al menos un cruce antes de generar las decisiones estratégicas.</p></div>
+    </div>
+    <div class="action-bar">
+      <button class="btn-ghost" onclick="irAStep(2)">← Volver</button>
+      <button class="btn-main" onclick="generarOutput()">Generar decisiones →</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-brand">Isonauta</span>
+    <span class="footer-tagline">No hables lindo, piensa hondo</span>
+  </div>
+
+</div>
+
+<script>
+const TIPOS = {
+  F: { label: 'Fortaleza', color: '#0F6E56', bg: '#E1F5EE' },
+  D: { label: 'Debilidad', color: '#854F0B', bg: '#FAEEDA' },
+  O: { label: 'Oportunidad', color: '#185FA5', bg: '#E6F1FB' },
+  A: { label: 'Amenaza', color: '#A32D2D', bg: '#FCEBEB' },
+};
+
+const CRUCES = [
+  {
+    id: 'FO', tipos: ['F','O'],
+    label: 'Fortalezas × Oportunidades',
+    badge: 'Estrategia ofensiva',
+    desc: '¿Cómo usar las fortalezas para aprovechar las oportunidades?',
+    color: '#0F6E56', bg: '#E1F5EE',
+    pregunta: 'Las fortalezas internas permiten capitalizar estas oportunidades. ¿Qué decisión estratégica emerge de este cruce?',
+    placeholder: 'Ej: Aprovechar la experiencia en ISO 9001 para expandir el alcance de certificación a nuevas líneas de servicio...',
+  },
+  {
+    id: 'FA', tipos: ['F','A'],
+    label: 'Fortalezas × Amenazas',
+    badge: 'Estrategia defensiva',
+    desc: '¿Cómo usar las fortalezas para neutralizar las amenazas?',
+    color: '#854F0B', bg: '#FAEEDA',
+    pregunta: 'Las fortalezas internas pueden actuar como escudo frente a estas amenazas. ¿Qué decisión estratégica emerge?',
+    placeholder: 'Ej: Usar la solidez del sistema de auditoría interna para anticipar cambios regulatorios antes de que impacten...',
+  },
+  {
+    id: 'DO', tipos: ['D','O'],
+    label: 'Debilidades × Oportunidades',
+    badge: 'Estrategia de reorientación',
+    desc: '¿Cómo superar las debilidades para no perder oportunidades?',
+    color: '#185FA5', bg: '#E6F1FB',
+    pregunta: 'Las debilidades pueden impedir aprovechar estas oportunidades. ¿Qué decisión estratégica permite corregir el curso?',
+    placeholder: 'Ej: Reforzar la capacitación en gestión documental para estar en condiciones de escalar hacia nuevos clientes...',
+  },
+  {
+    id: 'DA', tipos: ['D','A'],
+    label: 'Debilidades × Amenazas',
+    badge: 'Estrategia de supervivencia',
+    desc: '¿Cómo reducir las debilidades para evitar que las amenazas sean críticas?',
+    color: '#A32D2D', bg: '#FCEBEB',
+    pregunta: 'La combinación de debilidades y amenazas es la zona de mayor riesgo sistémico. ¿Qué decisión estratégica es prioritaria?',
+    placeholder: 'Ej: Establecer un plan de contingencia para la dependencia de un proveedor crítico ante posibles disrupciones...',
+  },
+];
+
+let factores = { F: [], D: [], O: [], A: [] };
+let cruceData = {};
+
+function agregarFactor(tipo) {
+  factores[tipo].push({ id: Date.now(), texto: '' });
+  renderFactores(tipo);
+}
+
+function eliminarFactor(tipo, id) {
+  factores[tipo] = factores[tipo].filter(f => f.id !== id);
+  renderFactores(tipo);
+}
+
+function actualizarFactor(tipo, id, val) {
+  const f = factores[tipo].find(f => f.id === id);
+  if (f) f.texto = val;
+}
+
+function renderFactores(tipo) {
+  const el = document.getElementById(`lista-${tipo}`);
+  const t = TIPOS[tipo];
+  if (factores[tipo].length === 0) { el.innerHTML = ''; return; }
+  el.innerHTML = factores[tipo].map(f => `
+    <div class="factor-item">
+      <input type="text" value="${f.texto}" placeholder="Describir ${t.label.toLowerCase()}..."
+        oninput="actualizarFactor('${tipo}',${f.id},this.value)">
+      <button class="factor-del" onclick="eliminarFactor('${tipo}',${f.id})">×</button>
+    </div>
+  `).join('');
+}
+
+function renderCruces() {
+  const el = document.getElementById('cruces-container');
+  el.innerHTML = CRUCES.map(c => {
+    const pares = [];
+    const t1 = c.tipos[0], t2 = c.tipos[1];
+    const items1 = factores[t1].filter(f => f.texto.trim());
+    const items2 = factores[t2].filter(f => f.texto.trim());
+
+    items1.forEach(f1 => items2.forEach(f2 => {
+      pares.push({ f1, f2, t1, t2 });
+    }));
+
+    const saved = cruceData[c.id] || '';
+
+    return `
+      <div class="cruce-card">
+        <div class="cruce-header">
+          <span class="cruce-badge" style="background:${c.bg};color:${c.color}">${c.badge}</span>
+          <div>
+            <p style="font-size:13px;font-weight:600;color:var(--text)">${c.label}</p>
+            <p class="cruce-desc">${c.desc}</p>
+          </div>
+        </div>
+        <div class="cruce-body">
+          ${pares.length > 0 ? `
+            <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Variables en juego</p>
+            <div class="cruce-pares">
+              ${items1.map(f => `<span class="cruce-par" style="background:${TIPOS[t1].bg};color:${TIPOS[t1].color};border-color:${TIPOS[t1].color}22">${f.texto}</span>`).join('')}
+              <span style="font-size:12px;color:var(--text3);align-self:center">×</span>
+              ${items2.map(f => `<span class="cruce-par" style="background:${TIPOS[t2].bg};color:${TIPOS[t2].color};border-color:${TIPOS[t2].color}22">${f.texto}</span>`).join('')}
+            </div>
+          ` : `<p style="font-size:12px;color:var(--text3);margin-bottom:12px;font-style:italic">Agrega ${TIPOS[t1].label.toLowerCase()}s y ${TIPOS[t2].label.toLowerCase()}s en el paso 1 para ver las variables en juego.</p>`}
+          <p class="cruce-pregunta">${c.pregunta}</p>
+          <textarea class="cruce-input" placeholder="${c.placeholder}"
+            oninput="cruceData['${c.id}']=this.value"
+          >${saved}</textarea>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function generarOutput() {
+  const rows = CRUCES.filter(c => (cruceData[c.id] || '').trim()).map(c => `
+    <tr>
+      <td>
+        <span class="tipo-pill" style="background:${c.bg};color:${c.color}">${c.label}</span>
+      </td>
+      <td style="font-weight:500;color:${c.color}">${c.badge}</td>
+      <td style="color:var(--text2);line-height:1.6">${cruceData[c.id]}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)">6.1</td>
+    </tr>
+  `).join('');
+
+  if (!rows) {
+    document.getElementById('foda-output').style.display = 'none';
+    document.getElementById('output-vacio').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('output-tbody').innerHTML = rows;
+  document.getElementById('foda-output').style.display = 'block';
+  document.getElementById('output-vacio').style.display = 'none';
+  document.getElementById('foda-output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function irAStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById(`panel-${i}`).classList.toggle('active', i === n);
+    document.getElementById(`step-btn-${i}`).classList.toggle('active', i === n);
+  });
+  if (n === 2) renderCruces();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function reiniciar() {
+  factores = { F: [], D: [], O: [], A: [] };
+  cruceData = {};
+  ['F','D','O','A'].forEach(t => renderFactores(t));
+  document.getElementById('foda-output').style.display = 'none';
+  document.getElementById('output-vacio').style.display = 'none';
+}
+
+// Inicializar con un factor por cuadrante
+['F','D','O','A'].forEach(t => { factores[t].push({ id: Date.now() + Math.random(), texto: '' }); renderFactores(t); });
+</script>
+</body>
+</html>
