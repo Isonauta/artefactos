@@ -3,488 +3,379 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>No Conformidades — Isonauta</title>
+<title>No Conformidades · Isonauta Artefactos</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #F7F6F2; --surface: #FFFFFF; --surface2: #F0EEE8;
-    --border: rgba(0,0,0,0.10); --border2: rgba(0,0,0,0.18);
-    --text: #1A1916; --text2: #6B6A64; --text3: #9C9A92;
-    --radius: 10px; --radius-lg: 16px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
-    --ocre: #C9922A; --ocre-light: #F5E6C8; --ocre-dark: #8B6218;
-    --nc-color: #A32D2D; --nc-bg: #FCEBEB;
-    --causa-color: #854F0B; --causa-bg: #FAEEDA;
-    --accion-color: #0F6E56; --accion-bg: #E1F5EE;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 0 0 80px; }
-  .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
-
-  /* Topbar */
-  .topbar { background: #1A1916; padding: 0 24px; }
-  .topbar-inner { max-width: 820px; margin: 0 auto; display: flex; align-items: baseline; justify-content: space-between; padding: 14px 0 12px; border-bottom: 1px solid rgba(201,146,42,0.25); }
-  .brand-name { font-size: 17px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ocre); }
-  .brand-tagline { font-size: 10px; font-weight: 300; font-style: italic; color: rgba(201,146,42,0.5); margin-left: 14px; }
-  .brand-right { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.22); letter-spacing: 0.06em; text-transform: uppercase; }
-
-  /* Hero */
-  .hero { background: #1A1916; padding: 30px 24px 34px; border-bottom: 1px solid rgba(201,146,42,0.12); }
-  .hero-inner { max-width: 820px; margin: 0 auto; }
-  .hero-label { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(201,146,42,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-  .hero-label::after { content: ''; display: block; height: 1px; width: 28px; background: var(--ocre); opacity: 0.3; }
-  .hero h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; color: #F7F6F2; margin-bottom: 6px; }
-  .hero h1 span { color: var(--ocre); }
-  .hero p { font-size: 13px; color: rgba(247,246,242,0.4); line-height: 1.6; font-weight: 300; max-width: 520px; }
-
-  /* Steps */
-  .steps-nav { display: flex; gap: 0; margin: 28px 0 24px; border: 0.5px solid var(--border2); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); }
-  .step-btn { flex: 1; padding: 12px 8px; font-size: 12px; font-weight: 500; border: none; background: none; cursor: pointer; color: var(--text3); font-family: 'DM Sans', sans-serif; border-right: 0.5px solid var(--border); transition: all .15s; text-align: center; }
-  .step-btn:last-child { border-right: none; }
-  .step-btn.active { background: #1A1916; color: var(--ocre); }
-  .step-btn .step-num { font-family: 'DM Mono', monospace; font-size: 10px; display: block; margin-bottom: 2px; opacity: 0.6; }
-
-  .step-panel { display: none; }
-  .step-panel.active { display: block; }
-
-  /* Card */
-  .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); margin-bottom: 14px; }
-
-  /* Fields */
-  .field-group { margin-bottom: 16px; }
-  .field-label { font-size: 11px; font-weight: 500; color: var(--text2); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; display: block; }
-  input[type=text], input[type=date], textarea, select {
-    width: 100%; font-size: 13px; padding: 9px 12px;
-    border: 0.5px solid var(--border); border-radius: var(--radius);
-    background: var(--bg); color: var(--text);
-    font-family: 'DM Sans', sans-serif; transition: border-color .15s;
-  }
-  input[type=text]:focus, input[type=date]:focus, textarea:focus, select:focus { outline: none; border-color: var(--ocre); background: var(--surface); }
-  input::placeholder, textarea::placeholder { color: var(--text3); }
-  textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
-
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-  @media (max-width:580px) { .field-row { grid-template-columns: 1fr; } .field-row-3 { grid-template-columns: 1fr; } }
-
-  /* Tipo selector */
-  .tipo-grid { display: flex; gap: 8px; margin-top: 6px; }
-  .tipo-btn { flex: 1; padding: 9px 8px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--bg); cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text2); font-family: 'DM Sans', sans-serif; text-align: center; transition: all .15s; }
-  .tipo-btn:hover { border-color: var(--ocre); }
-  .tipo-btn.sel-mayor { background: var(--nc-bg); border-color: var(--nc-color); color: var(--nc-color); }
-  .tipo-btn.sel-menor { background: var(--causa-bg); border-color: var(--causa-color); color: var(--causa-color); }
-  .tipo-btn.sel-obs { background: var(--accion-bg); border-color: var(--accion-color); color: var(--accion-color); }
-
-  /* 5 Porqués */
-  .porques-wrap { margin-top: 4px; }
-  .porque-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
-  .porque-num { width: 24px; height: 24px; border-radius: 50%; background: var(--causa-bg); color: var(--causa-color); font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 9px; font-family: 'DM Mono', monospace; }
-  .porque-item textarea { min-height: 56px; }
-  .porque-respuesta { font-size: 11px; color: var(--text3); font-style: italic; padding: 4px 0 0 34px; line-height: 1.5; }
-
-  /* Verificación acción */
-  .verificacion-wrap { margin-top: 14px; border-top: 0.5px solid var(--border); padding-top: 14px; }
-  .verificacion-label { font-size: 11px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 10px; }
-  .verif-options { display: flex; gap: 8px; margin-bottom: 12px; }
-  .verif-btn { flex: 1; padding: 9px 8px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--bg); cursor: pointer; font-size: 12px; font-weight: 500; color: var(--text2); font-family: 'DM Sans', sans-serif; text-align: center; transition: all .15s; }
-  .verif-btn.sel-causa { background: var(--accion-bg); border-color: var(--accion-color); color: var(--accion-color); }
-  .verif-btn.sel-sintoma { background: var(--nc-bg); border-color: var(--nc-color); color: var(--nc-color); }
-  .verif-alerta { font-size: 12px; padding: 10px 14px; border-radius: var(--radius); border: 0.5px solid transparent; display: none; line-height: 1.55; }
-
-  /* Output */
-  .output-section { margin-bottom: 20px; }
-  .output-section-title { font-size: 11px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 0.5px solid var(--border); }
-  .output-field { display: flex; gap: 10px; margin-bottom: 8px; align-items: baseline; }
-  .output-key { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; min-width: 120px; flex-shrink: 0; }
-  .output-val { font-size: 13px; color: var(--text); line-height: 1.55; }
-
-  .porques-output { margin-top: 8px; }
-  .porque-output-item { display: flex; gap: 10px; margin-bottom: 8px; align-items: baseline; }
-  .porque-output-num { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--causa-color); min-width: 50px; }
-
-  /* Botones */
-  .action-bar { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-  .btn-ghost { font-size: 13px; padding: 8px 18px; border: 0.5px solid var(--border2); border-radius: var(--radius); background: var(--surface); cursor: pointer; color: var(--text2); font-family: 'DM Sans', sans-serif; transition: all .15s; }
-  .btn-ghost:hover { background: var(--surface2); color: var(--text); }
-  .btn-main { font-size: 13px; font-weight: 500; padding: 9px 22px; border: 0.5px solid var(--ocre-dark); border-radius: var(--radius); background: #1A1916; cursor: pointer; color: var(--ocre); font-family: 'DM Sans', sans-serif; transition: opacity .15s; }
-  .btn-main:hover { opacity: 0.85; }
-
-  /* CTA */
-  .cta-card { background: #1A1916; border-radius: var(--radius-lg); padding: 22px; text-align: center; margin-top: 16px; }
-  .cta-card p { font-size: 13px; color: rgba(247,246,242,0.45); margin-bottom: 14px; line-height: 1.6; }
-  .cta-btn { font-size: 13px; font-weight: 500; padding: 9px 22px; border: 0.5px solid var(--ocre-dark); border-radius: var(--radius); background: transparent; cursor: pointer; color: var(--ocre); font-family: 'DM Sans', sans-serif; }
-
-  /* Footer */
-  .footer { border-top: 0.5px solid var(--border); padding: 20px 0 0; display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
-  .footer-brand { font-size: 11px; color: var(--ocre); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
-  .footer-tagline { font-size: 10px; color: var(--text3); font-style: italic; }
-
-  /* Print */
-  @media print {
-    body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .topbar { background: #1A1916 !important; padding: 16px 24px; }
-    .hero { padding: 20px 24px; }
-    .steps-nav, .action-bar, .btn-ghost, .btn-main, .cta-card, #panel-1, #panel-2 { display: none !important; }
-    #panel-3 { display: block !important; }
-    #nc-output { display: block !important; }
-    .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
-    .print-hide { display: none !important; }
-  }
+:root{--bg:#F7F6F2;--surface:#FFF;--surface2:#F0EEE8;--border:rgba(0,0,0,.10);--border2:rgba(0,0,0,.18);--text:#1A1916;--text2:#6B6A64;--text3:#9C9A92;--dark:#1A1916;--ocre:#C9922A;--ocre-l:#F5E6C8;--rojo:#A32D2D;--rojo-bg:#FCEBEB;--verde:#0F6E56;--verde-bg:#E1F5EE;--r:10px;--rl:16px;--sh:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.tb{background:var(--dark);padding:0 24px}
+.tbi{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(201,146,42,.2)}
+.br{font-size:16px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ocre);text-decoration:none}
+.tbr{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.08em}
+.hero{background:var(--dark);padding:36px 24px 40px;border-bottom:1px solid rgba(201,146,42,.12)}
+.hi{max-width:960px;margin:0 auto}
+.hl{font-family:'DM Mono',monospace;font-size:10px;color:rgba(201,146,42,.5);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.hl::after{content:'';display:block;height:1px;width:32px;background:var(--ocre);opacity:.3}
+.hero h1{font-size:clamp(24px,4vw,40px);font-weight:600;letter-spacing:-.8px;color:#F7F6F2;margin-bottom:8px;line-height:1.15}
+.hero h1 span{color:var(--ocre)}
+.hero p{font-size:14px;color:rgba(247,246,242,.38);line-height:1.65;max-width:520px}
+.aib{display:inline-flex;align-items:center;gap:6px;background:rgba(201,146,42,.1);border:.5px solid rgba(201,146,42,.25);border-radius:20px;padding:4px 12px;margin-top:14px}
+.aib .d{width:6px;height:6px;border-radius:50%;background:var(--ocre);animation:pu 2s ease infinite}
+.aib span{font-family:'DM Mono',monospace;font-size:10px;color:rgba(201,146,42,.7);text-transform:uppercase;letter-spacing:.08em}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.4}}
+.main{max-width:960px;margin:0 auto;padding:32px 24px 80px}
+.snav{display:flex;margin-bottom:28px;background:var(--surface);border:.5px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.sb{flex:1;padding:12px 6px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);background:none;border:none;cursor:pointer;transition:all .15s;text-transform:uppercase;letter-spacing:.05em;border-right:.5px solid var(--border)}
+.sb:last-child{border-right:none}
+.sb.act{background:var(--dark);color:var(--ocre)}
+.sb.dn{color:var(--verde)}
+.sb:disabled{opacity:.4;cursor:not-allowed}
+.card{background:var(--surface);border:.5px solid var(--border);border-radius:var(--rl);padding:28px;box-shadow:var(--sh);margin-bottom:20px}
+.ey{font-family:'DM Mono',monospace;font-size:10px;color:var(--ocre);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.ey::after{content:'';flex:1;height:.5px;background:var(--border2)}
+.ct{font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px;letter-spacing:-.2px}
+.cd{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.6}
+.f{margin-bottom:16px}
+.f label{display:block;font-size:11px;font-weight:500;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;font-family:'DM Mono',monospace}
+.f input,.f select,.f textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--surface2);border:.5px solid var(--border2);border-radius:var(--r);padding:10px 14px;outline:none;transition:border-color .15s}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--ocre);background:#fff}
+.f textarea{resize:vertical;min-height:80px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.fr{grid-template-columns:1fr}}
+.ts{display:flex;gap:8px;flex-wrap:wrap}
+.tb2{padding:6px 14px;border-radius:20px;font-size:12px;font-family:'DM Mono',monospace;border:.5px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;transition:all .15s;text-transform:uppercase;letter-spacing:.05em}
+.tb2.sm{background:var(--rojo-bg);border-color:var(--rojo);color:var(--rojo)}
+.tb2.sn{background:var(--ocre-l);border-color:var(--ocre);color:#8B6218}
+.tb2.so{background:var(--verde-bg);border-color:var(--verde);color:var(--verde)}
+.pqs{display:flex;flex-direction:column;gap:12px}
+.pi{display:flex;gap:12px;align-items:flex-start}
+.pn{width:28px;height:28px;border-radius:50%;background:var(--dark);color:var(--ocre);font-size:12px;font-family:'DM Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:4px}
+.aa{background:rgba(201,146,42,.04);border:.5px solid rgba(201,146,42,.2);border-radius:var(--rl);padding:20px;margin-top:16px}
+.aah{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.aah span{font-size:12px;font-family:'DM Mono',monospace;color:var(--ocre);text-transform:uppercase;letter-spacing:.08em}
+.ar{font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap}
+.al{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text3)}
+.al .ds span{animation:bl 1.4s ease infinite}
+.al .ds span:nth-child(2){animation-delay:.2s}
+.al .ds span:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,80%,100%{opacity:0}40%{opacity:1}}
+.bp{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;padding:10px 24px;background:var(--ocre);border:none;border-radius:20px;color:var(--dark);cursor:pointer;transition:opacity .15s;font-family:'DM Sans',sans-serif}
+.bp:hover{opacity:.85}
+.bp:disabled{opacity:.4;cursor:not-allowed}
+.bs{display:inline-flex;align-items:center;gap:8px;font-size:13px;padding:10px 20px;background:var(--surface2);border:.5px solid var(--border2);border-radius:20px;color:var(--text2);cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.bs:hover{border-color:var(--ocre);color:var(--text)}
+.bai{display:inline-flex;align-items:center;gap:8px;font-size:11px;padding:8px 16px;background:rgba(201,146,42,.08);border:.5px solid rgba(201,146,42,.25);border-radius:16px;color:var(--ocre);cursor:pointer;transition:all .15s;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.05em}
+.bai:hover{background:rgba(201,146,42,.15)}
+.bai:disabled{opacity:.4;cursor:not-allowed}
+.br2{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:20px}
+.os{background:var(--dark);border-radius:var(--rl);padding:28px}
+.ot{font-size:14px;font-weight:600;color:rgba(247,246,242,.8);margin-bottom:4px}
+.oc{font-size:13px;color:rgba(247,246,242,.5);line-height:1.75;white-space:pre-wrap;margin-top:12px}
+.ol{font-family:'DM Mono',monospace;font-size:10px;color:rgba(201,146,42,.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;margin-top:20px}
+.ol:first-child{margin-top:0}
+.hid{display:none!important}
+@media print{.tb,.hero,.snav,.br2,.bai{display:none!important}.os{background:#fff!important;border:1px solid #ccc}.oc,.ot,.ol{color:#333!important}}
 </style>
 </head>
 <body>
-
-<div class="topbar">
-  <div class="topbar-inner">
-    <div style="display:flex;align-items:baseline">
-      <span class="brand-name">Isonauta</span>
-      <span class="brand-tagline">No hables lindo, piensa hondo</span>
-    </div>
-    <span class="brand-right">Artefacto</span>
-  </div>
-</div>
-
-<div class="hero">
-  <div class="hero-inner">
-    <p class="hero-label">Mejora continua</p>
-    <h1>No <span>Conformidades</span></h1>
-    <p>Una NC mal gestionada no es un problema técnico — es una señal sistémica. Este artefacto te ayuda a llegar a la causa raíz, no al culpable.</p>
-  </div>
-</div>
-
-<div class="container">
-
-  <div class="steps-nav">
-    <button class="step-btn active" id="step-btn-1" onclick="irAStep(1)">
-      <span class="step-num">Paso 1</span>Describir el hecho
-    </button>
-    <button class="step-btn" id="step-btn-2" onclick="irAStep(2)">
-      <span class="step-num">Paso 2</span>Causa raíz
-    </button>
-    <button class="step-btn" id="step-btn-3" onclick="irAStep(3)">
-      <span class="step-num">Paso 3</span>Acción correctiva
-    </button>
+<div class="tb"><div class="tbi">
+  <a href="https://artefactos.vercel.app" class="br">Isonauta</a>
+  <span class="tbr">No Conformidades · IA</span>
+</div></div>
+<div class="hero"><div class="hi">
+  <p class="hl">Artefacto · Mejora continua · Cláusula 10.2</p>
+  <h1>No <span>Conformidades</span></h1>
+  <p>Registro, análisis de causa raíz y acción correctiva asistidos por IA. La IA te ayuda a redactar, profundizar causas y verificar que atacas el problema real — no el síntoma.</p>
+  <div class="aib"><span class="d"></span><span>Asistencia IA activa</span></div>
+</div></div>
+<div class="main">
+  <div class="snav">
+    <button class="sb act" id="bs1" onclick="gS(1)">01 · Hecho</button>
+    <button class="sb" id="bs2" onclick="gS(2)" disabled>02 · Causa raíz</button>
+    <button class="sb" id="bs3" onclick="gS(3)" disabled>03 · Acción</button>
+    <button class="sb" id="bs4" onclick="gS(4)" disabled>04 · Informe</button>
   </div>
 
-  <!-- PASO 1: Describir -->
-  <div class="step-panel active" id="panel-1">
-
+  <div id="s1">
     <div class="card">
-      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--ocre);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:16px">Identificación</p>
-
-      <div class="field-row-3">
-        <div class="field-group">
-          <label class="field-label">Código NC</label>
-          <input type="text" id="nc-codigo" placeholder="Ej: NC-2026-001">
-        </div>
-        <div class="field-group">
-          <label class="field-label">Fecha detección</label>
-          <input type="date" id="nc-fecha">
-        </div>
-        <div class="field-group">
-          <label class="field-label">Detectado por</label>
-          <input type="text" id="nc-detector" placeholder="Nombre o rol">
-        </div>
+      <p class="ey">Paso 01</p><p class="ct">Descripción del hecho</p>
+      <p class="cd">Describe qué ocurrió, dónde y cuándo. La IA mejora la redacción para que sea objetiva y auditable.</p>
+      <div class="fr">
+        <div class="f"><label>Código NC</label><input type="text" id="cod" placeholder="NC-2026-001"></div>
+        <div class="f"><label>Fecha detección</label><input type="date" id="fec"></div>
       </div>
-
-      <div class="field-row">
-        <div class="field-group">
-          <label class="field-label">Proceso afectado</label>
-          <input type="text" id="nc-proceso" placeholder="Ej: Gestión de compras, Producción...">
-        </div>
-        <div class="field-group">
-          <label class="field-label">Norma o requisito incumplido</label>
-          <input type="text" id="nc-norma" placeholder="Ej: ISO 9001:2015 cláusula 8.4.1">
-        </div>
+      <div class="f"><label>Tipo de hallazgo</label>
+        <div class="ts">
+          <button class="tb2" onclick="sT('m',this)">NC Mayor</button>
+          <button class="tb2" onclick="sT('n',this)">NC Menor</button>
+          <button class="tb2" onclick="sT('o',this)">Observación</button>
+        </div><input type="hidden" id="tip">
       </div>
-
-      <div class="field-group">
-        <label class="field-label">Tipo de hallazgo</label>
-        <div class="tipo-grid">
-          <button class="tipo-btn" id="tipo-mayor" onclick="selTipo('mayor')">No conformidad mayor</button>
-          <button class="tipo-btn" id="tipo-menor" onclick="selTipo('menor')">No conformidad menor</button>
-          <button class="tipo-btn" id="tipo-obs" onclick="selTipo('obs')">Observación</button>
-        </div>
+      <div class="f"><label>Requisito incumplido</label><input type="text" id="req" placeholder="Ej: ISO 9001:2015 · Cláusula 8.5.2"></div>
+      <div class="f"><label>¿Qué ocurrió?</label><textarea id="que" placeholder="Describe el hecho concreto..." rows="3"></textarea></div>
+      <div class="fr">
+        <div class="f"><label>¿Dónde ocurrió?</label><input type="text" id="don" placeholder="Proceso o área"></div>
+        <div class="f"><label>Detectado por</label><input type="text" id="det" placeholder="Auditoría, cliente, proceso..."></div>
       </div>
+      <div class="f"><label>Evidencia objetiva</label><textarea id="evi" placeholder="Evidencia que sustenta el hallazgo..." rows="2"></textarea></div>
+      <div class="f"><label>Impacto potencial</label><textarea id="imp" placeholder="¿Qué podría ocurrir si no se corrige?" rows="2"></textarea></div>
+      <div class="br2"><button class="bai" id="brr" onclick="mejRed()">✦ Mejorar redacción con IA</button></div>
+      <div class="aa hid" id="aar">
+        <div class="aah"><svg width="14" height="14" viewBox="0 0 24 24" fill="var(--ocre)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span>Sugerencia IA</span></div>
+        <div id="aar-c"></div>
+        <div class="br2"><button class="bs" onclick="apR()" style="margin-top:8px">Aplicar sugerencia</button></div>
+      </div>
+      <div class="br2"><button class="bp" onclick="iP2()">Continuar → Causa raíz</button></div>
     </div>
+  </div>
 
+  <div id="s2" class="hid">
     <div class="card">
-      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--nc-color);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px">Descripción del hecho</p>
-      <p style="font-size:12px;color:var(--text3);margin-bottom:14px;line-height:1.55">Describe lo que ocurrió con precisión. No busques la causa todavía — eso viene después. Describe el hecho observable: qué pasó, dónde, cuándo, bajo qué condiciones.</p>
-
-      <div class="field-group">
-        <label class="field-label">¿Qué ocurrió exactamente?</label>
-        <textarea id="nc-que" placeholder="Describe el hecho concreto que evidencia el incumplimiento..."></textarea>
+      <p class="ey">Paso 02</p><p class="ct">Análisis de causa raíz — 5 Por Qués</p>
+      <p class="cd">Pregunta "¿Por qué?" hasta llegar a la causa sistémica. La IA profundiza cuando te quedas en síntomas.</p>
+      <div class="pqs">
+        <div class="pi"><div class="pn">1</div><div class="f" style="flex:1;margin:0"><label>¿Por qué ocurrió el hecho?</label><textarea id="p1" rows="2"></textarea></div></div>
+        <div class="pi hid" id="pi2"><div class="pn">2</div><div class="f" style="flex:1;margin:0"><label>¿Por qué ocurrió eso?</label><textarea id="p2" rows="2"></textarea></div></div>
+        <div class="pi hid" id="pi3"><div class="pn">3</div><div class="f" style="flex:1;margin:0"><label>¿Por qué ocurrió eso?</label><textarea id="p3" rows="2"></textarea></div></div>
+        <div class="pi hid" id="pi4"><div class="pn">4</div><div class="f" style="flex:1;margin:0"><label>¿Por qué ocurrió eso?</label><textarea id="p4" rows="2"></textarea></div></div>
+        <div class="pi hid" id="pi5"><div class="pn">5</div><div class="f" style="flex:1;margin:0"><label>¿Por qué? — Causa raíz probable</label><textarea id="p5" rows="2"></textarea></div></div>
       </div>
-      <div class="field-row">
-        <div class="field-group">
-          <label class="field-label">¿Dónde ocurrió?</label>
-          <input type="text" id="nc-donde" placeholder="Área, proceso, etapa específica...">
-        </div>
-        <div class="field-group">
-          <label class="field-label">¿Cuál es la evidencia objetiva?</label>
-          <input type="text" id="nc-evidencia" placeholder="Registro, documento, observación directa...">
-        </div>
+      <div class="br2"><button class="bai" id="brc" onclick="sugC()">✦ Profundizar con IA</button></div>
+      <div class="aa hid" id="aac">
+        <div class="aah"><svg width="14" height="14" viewBox="0 0 24 24" fill="var(--ocre)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span>Análisis IA</span></div>
+        <div id="aac-c"></div>
       </div>
-      <div class="field-group">
-        <label class="field-label">¿Cuál es el impacto real o potencial?</label>
-        <textarea id="nc-impacto" placeholder="¿Qué consecuencias tiene o podría tener este incumplimiento sobre el SGC, el cliente o la organización?" style="min-height:64px"></textarea>
+      <div class="br2">
+        <button class="bs" onclick="gS(1)">← Volver</button>
+        <button class="bp" onclick="iP3()">Continuar → Acción correctiva</button>
       </div>
-    </div>
-
-    <div class="action-bar">
-      <button class="btn-ghost" onclick="reiniciar()">Limpiar todo</button>
-      <button class="btn-main" onclick="irAStep(2)">Analizar causa raíz →</button>
     </div>
   </div>
 
-  <!-- PASO 2: Causa raíz -->
-  <div class="step-panel" id="panel-2">
-
+  <div id="s3" class="hid">
     <div class="card">
-      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--causa-color);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Análisis de causa raíz — 5 Por qués</p>
-      <p style="font-size:12px;color:var(--text3);margin-bottom:18px;line-height:1.55">Cada respuesta se convierte en la pregunta del siguiente nivel. El objetivo es llegar a la causa sistémica — aquella que, si se resuelve, impide que la NC vuelva a ocurrir. No siempre se necesitan los 5 niveles: detente cuando llegues a una causa que puedas controlar.</p>
-
-      <div class="porques-wrap" id="porques-wrap">
-        <div class="porque-item">
-          <div class="porque-num">1</div>
-          <textarea class="porque-input" id="pq-1" placeholder="¿Por qué ocurrió el hecho descrito?" oninput="actualizarPorque(1)"></textarea>
-        </div>
-        <div class="porque-item" id="pq-wrap-2" style="display:none">
-          <div class="porque-num">2</div>
-          <textarea class="porque-input" id="pq-2" placeholder="¿Por qué?" oninput="actualizarPorque(2)"></textarea>
-        </div>
-        <div class="porque-item" id="pq-wrap-3" style="display:none">
-          <div class="porque-num">3</div>
-          <textarea class="porque-input" id="pq-3" placeholder="¿Por qué?" oninput="actualizarPorque(3)"></textarea>
-        </div>
-        <div class="porque-item" id="pq-wrap-4" style="display:none">
-          <div class="porque-num">4</div>
-          <textarea class="porque-input" id="pq-4" placeholder="¿Por qué?" oninput="actualizarPorque(4)"></textarea>
-        </div>
-        <div class="porque-item" id="pq-wrap-5" style="display:none">
-          <div class="porque-num">5</div>
-          <textarea class="porque-input" id="pq-5" placeholder="¿Por qué? (causa raíz probable)" oninput="actualizarPorque(5)"></textarea>
-        </div>
+      <p class="ey">Paso 03</p><p class="ct">Acción correctiva</p>
+      <p class="cd">La acción correctiva elimina la causa raíz — no el síntoma. La IA verifica si tu propuesta llega al nivel correcto.</p>
+      <div class="f"><label>Corrección inmediata (contención)</label><textarea id="cor" placeholder="¿Qué se hizo de inmediato?" rows="2"></textarea></div>
+      <div class="f"><label>Acción correctiva propuesta</label><textarea id="acc" placeholder="¿Qué elimina la causa raíz?" rows="3"></textarea></div>
+      <div class="fr">
+        <div class="f"><label>Responsable</label><input type="text" id="res" placeholder="Nombre o cargo"></div>
+        <div class="f"><label>Fecha límite</label><input type="date" id="fli"></div>
       </div>
-
-      <div class="field-group" style="margin-top:16px;padding-top:16px;border-top:0.5px solid var(--border)">
-        <label class="field-label" style="color:var(--causa-color)">Causa raíz identificada</label>
-        <p style="font-size:12px;color:var(--text3);margin-bottom:8px">Una vez completado el análisis, sintetiza en una sola oración la causa raíz del problema.</p>
-        <textarea id="nc-causa-raiz" placeholder="La causa raíz de esta NC es..."></textarea>
+      <div class="f"><label>Indicador de verificación</label><textarea id="ind" placeholder="¿Cómo sabremos que fue efectiva?" rows="2"></textarea></div>
+      <div class="br2"><button class="bai" id="bra" onclick="verAcc()">✦ Verificar con IA: ¿causa o síntoma?</button></div>
+      <div class="aa hid" id="aaa">
+        <div class="aah"><svg width="14" height="14" viewBox="0 0 24 24" fill="var(--ocre)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span>Verificación IA</span></div>
+        <div id="aaa-c"></div>
       </div>
-    </div>
-
-    <div class="action-bar">
-      <button class="btn-ghost" onclick="irAStep(1)">← Volver</button>
-      <button class="btn-main" onclick="irAStep(3)">Definir acción correctiva →</button>
+      <div class="br2">
+        <button class="bs" onclick="gS(2)">← Volver</button>
+        <button class="bp" onclick="iP4()">Generar informe IA</button>
+      </div>
     </div>
   </div>
 
-  <!-- PASO 3: Acción correctiva -->
-  <div class="step-panel" id="panel-3">
-
+  <div id="s4" class="hid">
     <div class="card">
-      <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--accion-color);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px">Acción correctiva</p>
-
-      <div class="field-group">
-        <label class="field-label">Acción inmediata (corrección)</label>
-        <p style="font-size:12px;color:var(--text3);margin-bottom:8px">¿Qué se hará de forma inmediata para contener el efecto del problema? Esta acción ataca el síntoma, no la causa.</p>
-        <textarea id="nc-correccion" placeholder="Ej: Separar el lote afectado, notificar al cliente, suspender el proceso..."></textarea>
+      <p class="ey">Paso 04</p><p class="ct">Informe de No Conformidad</p>
+      <p class="cd">Informe completo generado por IA, listo para el SGC y auditable según ISO 9001:2015 cláusula 10.2.</p>
+      <div class="os" id="inf-out">
+        <div class="al"><span>Generando informe</span><div class="ds"><span>.</span><span>.</span><span>.</span></div></div>
       </div>
-
-      <div class="field-group">
-        <label class="field-label">Acción correctiva (causa raíz)</label>
-        <p style="font-size:12px;color:var(--text3);margin-bottom:8px">¿Qué se hará para eliminar la causa raíz identificada? Esta acción debe impedir que la NC vuelva a ocurrir.</p>
-        <textarea id="nc-accion" placeholder="Ej: Rediseñar el procedimiento de verificación, capacitar al equipo, implementar control automático..."></textarea>
-      </div>
-
-      <div class="field-row">
-        <div class="field-group">
-          <label class="field-label">Responsable</label>
-          <input type="text" id="nc-responsable" placeholder="Nombre o cargo">
-        </div>
-        <div class="field-group">
-          <label class="field-label">Fecha límite</label>
-          <input type="date" id="nc-fecha-limite">
-        </div>
-      </div>
-
-      <div class="field-group">
-        <label class="field-label">Indicador de eficacia</label>
-        <p style="font-size:12px;color:var(--text3);margin-bottom:8px">¿Cómo sabrás que la acción correctiva fue efectiva? Define un indicador verificable.</p>
-        <input type="text" id="nc-indicador" placeholder="Ej: Cero recurrencias en los próximos 3 meses, tasa de error menor al 1%...">
-      </div>
-
-      <div class="verificacion-wrap">
-        <p class="verificacion-label">Verificación crítica — ¿La acción ataca la causa o el síntoma?</p>
-        <div class="verif-options">
-          <button class="verif-btn" id="verif-causa" onclick="selVerif('causa')">Ataca la causa raíz</button>
-          <button class="verif-btn" id="verif-sintoma" onclick="selVerif('sintoma')">Solo atiende el síntoma</button>
-        </div>
-        <div class="verif-alerta" id="verif-alerta-causa" style="background:var(--accion-bg);border-color:var(--accion-color);color:var(--accion-color)">
-          Bien. Una acción que ataca la causa raíz tiene alta probabilidad de impedir la recurrencia.
-        </div>
-        <div class="verif-alerta" id="verif-alerta-sintoma" style="background:var(--nc-bg);border-color:var(--nc-color);color:var(--nc-color)">
-          Atención. Estás atendiendo el síntoma, no la causa. La NC probablemente vuelva a ocurrir. Considera revisar el análisis de causa raíz y redefinir la acción correctiva.
-        </div>
+      <div class="br2" style="margin-top:20px">
+        <button class="bp" onclick="window.print()">Guardar como PDF</button>
+        <button class="bs" onclick="location.reload()">Nueva NC</button>
       </div>
     </div>
-
-    <div id="nc-output" style="display:none">
-      <div class="card">
-        <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--ocre);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Ficha de No Conformidad</p>
-        <p style="font-size:12px;color:var(--text3);margin-bottom:20px">Registro completo listo para el sistema de gestión</p>
-
-        <div class="output-section">
-          <p class="output-section-title" style="color:var(--nc-color)">Identificación</p>
-          <div id="out-identificacion"></div>
+    <!-- CTA Norma NC -->
+    <div style="background:var(--dark);border-radius:var(--rl);padding:32px 28px;margin-top:20px;border:.5px solid rgba(201,146,42,0.15);text-align:center">
+      <p style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(201,146,42,0.5);text-transform:uppercase;letter-spacing:.12em;margin-bottom:16px">¿Quieres ir más lejos?</p>
+      <h3 style="font-size:22px;font-weight:600;color:#F7F6F2;letter-spacing:-.4px;margin-bottom:10px;line-height:1.2">Este informe lo construiste tú.<br>En <span style="color:var(--ocre)">Norma NC</span> un asistente te guía.</h3>
+      <p style="font-size:13px;color:rgba(247,246,242,0.38);line-height:1.7;max-width:480px;margin:0 auto 24px">El artefacto te da la estructura. Norma NC te acompaña en cada paso — te pregunta, profundiza según tus respuestas y construye el análisis contigo como un diálogo. Integrado en tu SGC con historial, trazabilidad y plan de acción descargable.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
+        <div style="background:rgba(255,255,255,0.04);border:.5px solid rgba(255,255,255,0.08);border-radius:var(--r);padding:12px 16px;text-align:left;min-width:160px">
+          <p style="font-size:11px;font-family:'DM Mono',monospace;color:rgba(201,146,42,0.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Artefacto</p>
+          <p style="font-size:12px;color:rgba(247,246,242,0.5);line-height:1.5">Tú analizas.<br>La IA verifica.</p>
         </div>
-
-        <div class="output-section">
-          <p class="output-section-title" style="color:var(--nc-color)">Descripción del hecho</p>
-          <div id="out-hecho"></div>
-        </div>
-
-        <div class="output-section">
-          <p class="output-section-title" style="color:var(--causa-color)">Análisis de causa raíz</p>
-          <div id="out-causa"></div>
-        </div>
-
-        <div class="output-section">
-          <p class="output-section-title" style="color:var(--accion-color)">Acción correctiva</p>
-          <div id="out-accion"></div>
+        <div style="display:flex;align-items:center;color:var(--ocre);font-size:18px">→</div>
+        <div style="background:rgba(201,146,42,0.08);border:.5px solid rgba(201,146,42,0.25);border-radius:var(--r);padding:12px 16px;text-align:left;min-width:160px">
+          <p style="font-size:11px;font-family:'DM Mono',monospace;color:var(--ocre);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Norma NC</p>
+          <p style="font-size:12px;color:rgba(247,246,242,0.7);line-height:1.5">La IA te guía.<br>Tú decides.</p>
         </div>
       </div>
-
-      <div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap" class="print-hide">
-        <button class="btn-ghost" onclick="window.print()" style="display:flex;align-items:center;gap:6px">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          Guardar como PDF
-        </button>
-      </div>
-
-      <div class="cta-card">
-        <p>Esta es una muestra del Artefacto de No Conformidades Isonauta.<br>El ecosistema completo integra contexto, partes interesadas, cultura y mejora continua.</p>
-        <button class="cta-btn" onclick="window.open('https://artefactos.vercel.app','_blank')">Ver todos los artefactos →</button>
-      </div>
+      <a id="cta-norma" href="#" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;padding:12px 28px;background:var(--ocre);border-radius:20px;color:var(--dark);text-decoration:none;transition:opacity .15s">
+        Conocer Norma NC para mi organización
+      </a>
+      <p style="font-size:11px;color:rgba(255,255,255,0.18);font-family:'DM Mono',monospace;margin-top:12px">Escríbenos · te mostramos el demo en vivo</p>
     </div>
 
-    <div class="action-bar">
-      <button class="btn-ghost" onclick="irAStep(2)">← Volver</button>
-      <button class="btn-main" onclick="generarFicha()">Generar ficha →</button>
+    <div style="text-align:center;margin-top:24px">
+      <a href="https://artefactos.vercel.app" style="font-size:12px;color:var(--text3);text-decoration:none;font-family:'DM Mono',monospace">← Volver a Artefactos Isonauta</a>
     </div>
   </div>
-
-  <div class="footer">
-    <span class="footer-brand">Isonauta</span>
-    <span class="footer-tagline">No hables lindo, piensa hondo</span>
-  </div>
-
 </div>
 
 <script>
-let tipoNC = null;
-let verifNC = null;
+const ST={tipo:'',sug:''};
+document.getElementById('fec').valueAsDate=new Date();
 
-function selTipo(tipo) {
-  tipoNC = tipo;
-  ['mayor','menor','obs'].forEach(t => {
-    document.getElementById(`tipo-${t}`).className = 'tipo-btn';
+function gS(n){
+  [1,2,3,4].forEach(i=>{
+    document.getElementById('s'+i).classList.toggle('hid',i!==n);
+    const b=document.getElementById('bs'+i);
+    b.classList.remove('act');
+    if(i===n)b.classList.add('act');
   });
-  const clases = { mayor: 'sel-mayor', menor: 'sel-menor', obs: 'sel-obs' };
-  document.getElementById(`tipo-${tipo}`).classList.add(clases[tipo]);
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function actualizarPorque(n) {
-  const val = document.getElementById(`pq-${n}`).value.trim();
-  if (val && n < 5) {
-    document.getElementById(`pq-wrap-${n+1}`).style.display = 'flex';
+function sT(t,el){
+  document.querySelectorAll('.tb2').forEach(b=>b.className='tb2');
+  el.classList.add('s'+t);
+  ST.tipo=t;
+  document.getElementById('tip').value=t;
+}
+
+document.addEventListener('input',function(e){
+  const m={p1:'pi2',p2:'pi3',p3:'pi4',p4:'pi5'};
+  if(m[e.target.id]&&e.target.value.trim().length>8)
+    document.getElementById(m[e.target.id]).classList.remove('hid');
+});
+
+function cx(){
+  return{
+    cod:document.getElementById('cod').value,
+    tip:ST.tipo,
+    req:document.getElementById('req').value,
+    que:document.getElementById('que').value,
+    don:document.getElementById('don').value,
+    det:document.getElementById('det').value,
+    evi:document.getElementById('evi').value,
+    imp:document.getElementById('imp').value,
+    p1:document.getElementById('p1').value,
+    p2:document.getElementById('p2').value,
+    p3:document.getElementById('p3').value,
+    p4:document.getElementById('p4').value,
+    p5:document.getElementById('p5').value,
+    cor:document.getElementById('cor').value,
+    acc:document.getElementById('acc').value,
+    res:document.getElementById('res').value,
+    ind:document.getElementById('ind').value,
+  };
+}
+
+async function callAI(sys,usr){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:[{role:'user',content:usr}]})
+  });
+  const d=await r.json();
+  return d.content[0].text;
+}
+
+function ld(id,msg){
+  document.getElementById(id).innerHTML=`<div class="al"><span>${msg}</span><div class="ds"><span>.</span><span>.</span><span>.</span></div></div>`;
+}
+
+function iP2(){
+  if(!document.getElementById('que').value.trim()){alert('Describe el hecho antes de continuar.');return;}
+  document.getElementById('bs2').disabled=false;
+  document.getElementById('bs2').classList.add('dn');
+  gS(2);
+}
+function iP3(){
+  if(!document.getElementById('p1').value.trim()){alert('Completa al menos el primer Por Qué.');return;}
+  document.getElementById('bs3').disabled=false;
+  document.getElementById('bs3').classList.add('dn');
+  gS(3);
+}
+function iP4(){
+  if(!document.getElementById('acc').value.trim()){alert('Define la acción correctiva antes de continuar.');return;}
+  document.getElementById('bs4').disabled=false;
+  document.getElementById('bs4').classList.add('dn');
+  gS(4);
+  genInf();
+}
+
+async function mejRed(){
+  const c=cx();
+  if(!c.que){alert('Describe primero el hecho.');return;}
+  const btn=document.getElementById('brr');
+  btn.disabled=true;btn.textContent='Analizando...';
+  document.getElementById('aar').classList.remove('hid');
+  ld('aar-c','Mejorando redacción');
+  try{
+    const t=await callAI(
+      'Eres experto en sistemas de gestión ISO. Mejora redacciones de no conformidades para que sean claras, objetivas y auditables según ISO 9001 cláusula 10.2. Responde solo con la redacción mejorada, sin explicaciones.',
+      `Mejora esta descripción. Debe responder QUÉ, DÓNDE y EFECTO observable.\n\nHecho: "${c.que}"\nDónde: "${c.don}"`
+    );
+    ST.sug=t;
+    document.getElementById('aar-c').innerHTML=`<p class="ar">${t}</p>`;
+  }catch(e){document.getElementById('aar-c').innerHTML='<p style="color:var(--rojo);font-size:13px">Error de conexión. Intenta nuevamente.</p>';}
+  btn.disabled=false;btn.textContent='✦ Mejorar redacción con IA';
+}
+
+function apR(){
+  if(ST.sug){document.getElementById('que').value=ST.sug;document.getElementById('aar').classList.add('hid');}
+}
+
+async function sugC(){
+  const c=cx();
+  const pqs=[c.p1,c.p2,c.p3,c.p4,c.p5].filter(p=>p.trim());
+  if(!pqs.length){alert('Escribe al menos el primer Por Qué.');return;}
+  const btn=document.getElementById('brc');
+  btn.disabled=true;btn.textContent='Analizando...';
+  document.getElementById('aac').classList.remove('hid');
+  ld('aac-c','Analizando cadena causal');
+  try{
+    const t=await callAI(
+      'Eres experto en análisis de causa raíz ISO. Aplicas 5 Por Qués y distingues causas sistémicas de síntomas superficiales.',
+      `Analiza esta cadena causal.\n\nHecho: "${c.que}"\nPor Qués:\n${pqs.map((p,i)=>`${i+1}. ${p}`).join('\n')}\n\nIndica: 1) ¿Llega a causa sistémica o se quedó en síntoma? 2) Siguiente nivel si es necesario. 3) Tipo de causa (proceso, formación, recursos, liderazgo, diseño del sistema).`
+    );
+    document.getElementById('aac-c').innerHTML=`<p class="ar">${t}</p>`;
+  }catch(e){document.getElementById('aac-c').innerHTML='<p style="color:var(--rojo);font-size:13px">Error de conexión. Intenta nuevamente.</p>';}
+  btn.disabled=false;btn.textContent='✦ Profundizar con IA';
+}
+
+async function verAcc(){
+  const c=cx();
+  if(!c.acc){alert('Define la acción correctiva primero.');return;}
+  const btn=document.getElementById('bra');
+  btn.disabled=true;btn.textContent='Verificando...';
+  document.getElementById('aaa').classList.remove('hid');
+  ld('aaa-c','Verificando');
+  const pqs=[c.p1,c.p2,c.p3,c.p4,c.p5].filter(p=>p.trim());
+  try{
+    const t=await callAI(
+      'Eres auditor experto en ISO 9001. Verificas si acciones correctivas atacan la causa raíz o el síntoma. Sé directo y específico.',
+      `¿Esta acción ataca causa raíz o síntoma?\n\nHecho: "${c.que}"\nCadena: ${pqs.map((p,i)=>`${i+1}. ${p}`).join(' → ')}\n\nAcción: "${c.acc}"\n\nResponde: 1) ¿Causa raíz o síntoma? (directo) 2) Justificación breve. 3) Cómo mejorar si no llega a la causa raíz.`
+    );
+    document.getElementById('aaa-c').innerHTML=`<p class="ar">${t}</p>`;
+  }catch(e){document.getElementById('aaa-c').innerHTML='<p style="color:var(--rojo);font-size:13px">Error de conexión. Intenta nuevamente.</p>';}
+  btn.disabled=false;btn.textContent='✦ Verificar con IA: ¿causa o síntoma?';
+}
+
+// CTA Norma NC
+document.addEventListener('DOMContentLoaded', function() {
+  var cta = document.getElementById('cta-norma');
+  if(cta) cta.href = 'https://wa.me/56981571712?text=Hola%20Cristián%2C%20vi%20el%20artefacto%20de%20No%20Conformidades%20y%20me%20interesa%20conocer%20Norma%20NC%20para%20mi%20organización';
+});
+
+async function genInf(){
+  const c=cx();
+  const pqs=[c.p1,c.p2,c.p3,c.p4,c.p5].filter(p=>p.trim());
+  const tl=c.tip==='m'?'No Conformidad Mayor':c.tip==='n'?'No Conformidad Menor':'Observación';
+  const out=document.getElementById('inf-out');
+  try{
+    const t=await callAI(
+      'Eres experto en sistemas de gestión ISO. Generas informes de no conformidades claros, objetivos y auditables según ISO 9001:2015 cláusula 10.2.',
+      `Genera informe ejecutivo de no conformidad:\n\nCódigo: ${c.cod||'NC-SIN-CÓDIGO'}\nTipo: ${tl}\nRequisito: ${c.req}\nHecho: ${c.que}\nDónde: ${c.don}\nDetectado por: ${c.det}\nEvidencia: ${c.evi}\nImpacto: ${c.imp}\n\n5 Por Qués:\n${pqs.map((p,i)=>`${i+1}. ${p}`).join('\n')}\n\nCorrección inmediata: ${c.cor}\nAcción correctiva: ${c.acc}\nResponsable: ${c.res}\nIndicador: ${c.ind}\n\nGenera con secciones: Resumen ejecutivo, Descripción del hallazgo, Análisis causa raíz, Acción correctiva y criterio de verificación.`
+    );
+    out.innerHTML=`<p class="ol">Informe NC · Cláusula 10.2 · Isonauta IA</p><p class="ot">${c.cod||'NC'} · ${tl} · ${document.getElementById('fec').value}</p><p class="ol" style="margin-top:16px">Análisis</p><p class="oc">${t}</p>`;
+  }catch(e){
+    out.innerHTML=`<p class="ol">Registro NC · Cláusula 10.2</p><p class="ot">${c.cod||'NC'} · ${tl}</p><p class="ol" style="margin-top:16px">Hecho</p><p class="oc">${c.que}\nDónde: ${c.don}\nEvidencia: ${c.evi}</p><p class="ol">Causa raíz</p><p class="oc">${pqs.map((p,i)=>`${i+1}. ${p}`).join('\n')}</p><p class="ol">Acción correctiva</p><p class="oc">Corrección: ${c.cor}\nAcción: ${c.acc}\nResponsable: ${c.res}\nVerificación: ${c.ind}</p>`;
   }
-}
-
-function selVerif(tipo) {
-  verifNC = tipo;
-  ['causa','sintoma'].forEach(t => document.getElementById(`verif-${t}`).className = 'verif-btn');
-  document.getElementById(`verif-${tipo}`).classList.add(`sel-${tipo}`);
-  document.getElementById('verif-alerta-causa').style.display = tipo === 'causa' ? 'block' : 'none';
-  document.getElementById('verif-alerta-sintoma').style.display = tipo === 'sintoma' ? 'block' : 'none';
-}
-
-function campo(key, val) {
-  if (!val || !val.trim()) return '';
-  return `<div class="output-field"><span class="output-key">${key}</span><span class="output-val">${val}</span></div>`;
-}
-
-const TIPOS_LABEL = { mayor: 'No conformidad mayor', menor: 'No conformidad menor', obs: 'Observación', null: '—' };
-
-function generarFicha() {
-  const porques = [1,2,3,4,5].map(n => {
-    const el = document.getElementById(`pq-${n}`);
-    return el ? el.value.trim() : '';
-  }).filter(v => v);
-
-  document.getElementById('out-identificacion').innerHTML = [
-    campo('Código', document.getElementById('nc-codigo').value),
-    campo('Fecha', document.getElementById('nc-fecha').value),
-    campo('Detectado por', document.getElementById('nc-detector').value),
-    campo('Proceso', document.getElementById('nc-proceso').value),
-    campo('Requisito', document.getElementById('nc-norma').value),
-    campo('Tipo', TIPOS_LABEL[tipoNC]),
-  ].join('');
-
-  document.getElementById('out-hecho').innerHTML = [
-    campo('¿Qué ocurrió?', document.getElementById('nc-que').value),
-    campo('¿Dónde?', document.getElementById('nc-donde').value),
-    campo('Evidencia', document.getElementById('nc-evidencia').value),
-    campo('Impacto', document.getElementById('nc-impacto').value),
-  ].join('');
-
-  const pqHTML = porques.length > 0 ? `
-    <div class="output-field">
-      <span class="output-key">5 Por qués</span>
-      <div class="output-val">
-        ${porques.map((p,i) => `<div style="margin-bottom:4px"><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--causa-color);margin-right:8px">Por qué ${i+1}</span>${p}</div>`).join('')}
-      </div>
-    </div>` : '';
-
-  document.getElementById('out-causa').innerHTML = pqHTML + campo('Causa raíz', document.getElementById('nc-causa-raiz').value);
-
-  const verifLabel = verifNC === 'causa' ? '✓ Ataca la causa raíz' : verifNC === 'sintoma' ? '⚠ Solo atiende el síntoma' : '—';
-  const verifColor = verifNC === 'causa' ? 'var(--accion-color)' : verifNC === 'sintoma' ? 'var(--nc-color)' : 'var(--text3)';
-
-  document.getElementById('out-accion').innerHTML = [
-    campo('Corrección inmediata', document.getElementById('nc-correccion').value),
-    campo('Acción correctiva', document.getElementById('nc-accion').value),
-    campo('Responsable', document.getElementById('nc-responsable').value),
-    campo('Fecha límite', document.getElementById('nc-fecha-limite').value),
-    campo('Indicador eficacia', document.getElementById('nc-indicador').value),
-    verifNC ? `<div class="output-field"><span class="output-key">Verificación</span><span class="output-val" style="color:${verifColor};font-weight:500">${verifLabel}</span></div>` : '',
-  ].join('');
-
-  document.getElementById('nc-output').style.display = 'block';
-  document.getElementById('nc-output').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function irAStep(n) {
-  [1,2,3].forEach(i => {
-    document.getElementById(`panel-${i}`).classList.toggle('active', i === n);
-    document.getElementById(`step-btn-${i}`).classList.toggle('active', i === n);
-  });
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function reiniciar() {
-  tipoNC = null; verifNC = null;
-  ['mayor','menor','obs'].forEach(t => document.getElementById(`tipo-${t}`).className = 'tipo-btn');
-  ['verif-causa','verif-sintoma'].forEach(id => document.getElementById(id).className = 'verif-btn');
-  ['verif-alerta-causa','verif-alerta-sintoma'].forEach(id => document.getElementById(id).style.display = 'none');
-  ['nc-codigo','nc-detector','nc-proceso','nc-norma','nc-donde','nc-evidencia','nc-responsable','nc-indicador'].forEach(id => document.getElementById(id).value = '');
-  ['nc-fecha','nc-fecha-limite'].forEach(id => document.getElementById(id).value = '');
-  ['nc-que','nc-impacto','nc-causa-raiz','nc-correccion','nc-accion'].forEach(id => document.getElementById(id).value = '');
-  [1,2,3,4,5].forEach(n => { const el = document.getElementById(`pq-${n}`); if(el) el.value = ''; });
-  [2,3,4,5].forEach(n => { const el = document.getElementById(`pq-wrap-${n}`); if(el) el.style.display = 'none'; });
-  document.getElementById('nc-output').style.display = 'none';
 }
 </script>
 </body>
